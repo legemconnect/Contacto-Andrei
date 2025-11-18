@@ -4,7 +4,12 @@
     <meta charset="UTF-8">
     <title>Andrei Dima | Perfil y Contacto</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <script src="https://code.highcharts.com/maps/highmaps.js"></script>
+    <script src="https://code.highcharts.com/mapdata/custom/europe.js"></script>
+
     <style>
         :root {
             --primary: #2874A6;
@@ -23,6 +28,49 @@
             font-family: 'Segoe UI', Arial, sans-serif;
             color: #333;
         }
+        
+        /* Selector de idioma */
+        .language-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 8px;
+            background: white;
+            padding: 8px;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 16px rgba(40, 116, 166, 0.15);
+        }
+        
+        .language-selector button {
+            background: transparent;
+            border: 2px solid #e0e0e0;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #666;
+        }
+        
+        .language-selector button:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .language-selector button.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 2px 8px rgba(40, 116, 166, 0.3);
+        }
+        
         .container {
             max-width: 480px;
             margin: 46px auto;
@@ -66,6 +114,7 @@
             margin-bottom: 8px;
             outline: none;
             background: #f8fafd;
+            box-sizing: border-box;
         }
         input:focus, textarea:focus {
             border-color: var(--primary);
@@ -120,7 +169,7 @@
         }
         footer {
             max-width: 480px;
-            margin: 18px auto 12px auto;
+            margin: 18px auto 40px auto;
             font-size: 0.95em;
             color: #444;
             padding: 0 18px;
@@ -131,21 +180,21 @@
         }
         a { color: var(--primary); text-decoration: underline; }
 
-        /* Estilos específicos para las nuevas secciones */
         .new-section {
-            border-bottom: 1px solid #eee; /* Separador sutil */
-            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 25px;
             margin-bottom: 25px;
-            text-align: left; /* Alineación de texto para párrafos y listas */
+            text-align: left;
         }
         .new-section:last-of-type {
             border-bottom: none;
             margin-bottom: 0;
+            padding-bottom: 0;
         }
         .new-section h3 {
             color: var(--secondary);
             font-size: 1.5em;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             text-align: center;
         }
         .new-section ul {
@@ -157,106 +206,451 @@
         }
         .new-section ul li a {
             display: block;
-            padding: 8px 10px;
+            padding: 10px 12px;
             border: 1px solid #e0e0e0;
             border-radius: var(--radius);
             background: #fdfdfd;
             text-decoration: none;
-            transition: background 0.2s;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
         }
         .new-section ul li a:hover {
             background: #f4faff;
             border-color: var(--primary);
+            transform: translateX(3px);
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .profile-header img {
+            max-width: 80%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: block;
+            margin: 0 auto;
+        }
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .social-links a {
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+        .social-links a:hover {
+            transform: scale(1.1);
+        }
+        
+        .map-toggle {
+            background: var(--primary);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.1em;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .map-toggle:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40, 116, 166, 0.3);
+        }
+        
+        .map-toggle i {
+            transition: transform 0.3s ease;
+        }
+        
+        .map-toggle.active i {
+            transform: rotate(180deg);
+        }
+        
+        .map-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+        }
+        
+        .map-content.expanded {
+            max-height: 600px;
+            opacity: 1;
+            margin-top: 15px;
+            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease-in 0.2s, margin-top 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        #map-container {
+            height: 500px;
+            width: 100%;
+            margin: 0 auto;
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid #eee;
         }
 
         @media (max-width: 540px) {
             .container { max-width: 96vw; padding: 24px 5vw; }
             footer { max-width: 98vw; padding: 0 5vw; }
-            h2 { font-size: 1.8em; } /* Ajuste del h2 principal para móviles */
+            h2 { font-size: 1.8em; } 
             .new-section h3 { font-size: 1.3em; }
+            #map-container { height: 350px; }
+            .map-content.expanded { max-height: 450px; }
+            .language-selector {
+                top: 10px;
+                right: 10px;
+                padding: 6px;
+                gap: 6px;
+            }
+            .language-selector button {
+                padding: 6px 12px;
+                font-size: 0.85em;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Selector de idioma -->
+    <div class="language-selector">
+        <button class="lang-btn active" data-lang="es">
+            🇪🇸 ES
+        </button>
+        <button class="lang-btn" data-lang="en">
+            🇬🇧 EN
+        </button>
+    </div>
+
     <div class="container">
         
         <section id="sobre-mi" class="new-section">
-            <div style="text-align: center; margin-bottom: 20px;">
-                <img src="img/Uji.png" alt="Logo de la Universitat Jaume I" style="max-width: 80%; height: auto; border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: block; margin: 0 auto;">
+            <div class="profile-header">
+                <img src="img/Uji.png" alt="Logo de la Universitat Jaume I">
             </div>
-            <h3>👤 Sobre Andrei</h3>
-            <p>Hola, mi nombre es Andrei Dima. Soy estudiante de Derecho con una profunda pasión por la tecnología, la inteligencia artificial y el asesoramiento jurídico empresarial.</p>
-            <p>Este sitio sirve como mi portal profesional, donde puedes encontrar mis publicaciones, trabajos y una forma directa de contactarme.</p>
+            <h3 id="about-title">👤 Sobre Andrei</h3>
+            <p id="about-text1">Hola, mi nombre es Andrei Dima. Soy estudiante de Derecho con una profunda pasión por la tecnología, la inteligencia artificial y el asesoramiento jurídico empresarial.</p>
+            <p id="about-text2">Este sitio sirve como mi portal profesional, donde puedes encontrar mis publicaciones, trabajos y una forma directa de contactarme.</p>
             
-            <div style="text-align: center; margin-top: 20px;">
-                <a href="https://www.linkedin.com/in/andidima/" target="_blank" title="Mi Perfil de LinkedIn" style="margin: 0 10px;"><i class="fa-brands fa-linkedin" style="font-size: 2em; color: var(--primary);"></i></a>
-                <a href="https://github.com/legemconnect/Contacto-Andrei" target="_blank" title="Mi Repositorio de GitHub" style="margin: 0 10px;"><i class="fa-brands fa-github" style="font-size: 2em; color: var(--primary);"></i></a>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/andidima/" target="_blank" id="linkedin-link" title="Mi Perfil de LinkedIn">
+                    <i class="fa-brands fa-linkedin" style="font-size: 2.2em; color: var(--primary);"></i>
+                </a>
+                <a href="https://github.com/legemconnect/Contacto-Andrei" target="_blank" id="github-link" title="Mi Repositorio de GitHub">
+                    <i class="fa-brands fa-github" style="font-size: 2.2em; color: var(--primary);"></i>
+                </a>
             </div>
         </section>
 
         <section id="mis-informes" class="new-section">
-            <h3>📚 Informes y Artículos</h3>
-            <p>Accede a mis trabajos de investigación y proyectos académicos.</p>
+            <h3 id="reports-title">📚 Informes y Artículos</h3>
+            <p id="reports-subtitle">Accede a mis trabajos de investigación y proyectos académicos.</p>
             <ul>
                 <li>
                     <a href="reports/Fondos NewGen.pdf" target="_blank">
-                        <i class="fa-solid fa-file-pdf icon"></i>Análisis de los Fondos NewGen de la UE (PDF)
+                        <i class="fa-solid fa-file-pdf icon"></i>
+                        <span id="report1">Análisis de los Fondos NewGen de la UE (PDF)</span>
                     </a>
                 </li>
                 <li>
                     <a href="reports/Comentario STS.pdf" target="_blank">
-                        <i class="fa-solid fa-file-pdf icon"></i>Comentario: Sentencia del Tribunal Supremo (PDF)
+                        <i class="fa-solid fa-file-pdf icon"></i>
+                        <span id="report2">Comentario: Sentencia del Tribunal Supremo (PDF)</span>
                     </a>
                 </li>
                 <li>
                     <a href="reports/Jueces Robot.pdf" target="_blank">
-                        <i class="fa-solid fa-file-pdf icon"></i>Análisis jurídico de los jueces robot (PDF)
+                        <i class="fa-solid fa-file-pdf icon"></i>
+                        <span id="report3">Análisis jurídico de los jueces robot (PDF)</span>
                     </a>
                 </li>
             </ul>
         </section>
+
+        <section id="mis-viajes" class="new-section">
+            <h3 id="travel-title">🌍 Mis Viajes</h3>
+            <p style="text-align: center; font-size: 0.9em; color: #666; margin-bottom: 5px;" id="travel-subtitle">
+                Países que he visitado.
+            </p>
+            
+            <button class="map-toggle" id="mapToggle">
+                <span id="map-toggle-text">Ver mapa de viajes</span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            
+            <div class="map-content" id="mapContent">
+                <div id="map-container"></div>
+            </div>
+        </section>
         
         <section id="formulario-contacto">
-            <h2><i class="fa-solid fa-gavel icon"></i>Contacta para una consulta</h2>
-            <div class="subtitle">Completa el formulario y un profesional revisará tu caso.</div>
+            <h2><i class="fa-solid fa-gavel icon"></i><span id="contact-title">Contacta para una consulta</span></h2>
+            <div class="subtitle" id="contact-subtitle">Completa el formulario y un profesional revisará tu caso.</div>
             <form id="legal-form">
-                <label for="name">Nombre:</label>
-                <input type="text" id="name" name="name" required autofocus>
-                <label for="email">Correo electrónico:</label>
+                <label for="name" id="label-name">Nombre:</label>
+                <input type="text" id="name" name="name" required>
+                
+                <label for="email" id="label-email">Correo electrónico:</label>
                 <input type="email" id="email" name="email" required>
-                <label for="phone">Teléfono:</label>
+                
+                <label for="phone" id="label-phone">Teléfono:</label>
                 <input type="tel" id="phone" name="phone" required>
-                <label for="description">Breve descripción del problema legal:</label>
+                
+                <label for="description" id="label-description">Breve descripción del problema legal:</label>
                 <textarea id="description" name="description" required rows="5"></textarea>
-                <label for="jurisdiction">Jurisdicción o ubicación (ej. ciudad, país):</label>
+                
+                <label for="jurisdiction" id="label-jurisdiction">Jurisdicción o ubicación (ej. ciudad, país):</label>
                 <input type="text" id="jurisdiction" name="jurisdiction" required>
-                <button type="submit"><i class="fa-solid fa-paper-plane icon"></i>Enviar</button>
+                
+                <button type="submit"><i class="fa-solid fa-paper-plane icon"></i><span id="btn-submit">Enviar</span></button>
             </form>
+
             <div id="confirmation" class="confirmation">
                 <i class="fa-solid fa-check-circle icon"></i>
-                ¡Tu consulta ha sido enviada correctamente! Nos pondremos en contacto contigo pronto.
+                <span id="confirmation-text">¡Tu consulta ha sido enviada correctamente! Nos pondremos en contacto contigo pronto.</span>
             </div>
+            
             <div id="error" class="error">
                 <i class="fa-solid fa-triangle-exclamation icon"></i>
-                Ha ocurrido un error al enviar tu consulta. Por favor, inténtalo de nuevo.
+                <span id="error-text">Ha ocurrido un error al enviar tu consulta. Por favor, inténtalo de nuevo.</span>
             </div>
-            <div id="response" style="display:none;"></div>
+            
+            <div id="response" style="display:none; margin-top: 20px; background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary);"></div>
         </section>
     </div>
+
     <footer>
-        <p><strong>Descargo de responsabilidad:</strong> La información proporcionada en este sitio es solo para fines académicos y no constituye asesoramiento legal. Consulte siempre con un abogado calificado para problemas legales específicos.</p>
-        <p>Contacto: andreidimaavram@gmail.com</p>
+        <p><strong id="disclaimer-title">Descargo de responsabilidad:</strong> <span id="disclaimer-text">La información proporcionada en este sitio es solo para fines académicos y no constituye asesoramiento legal. Consulte siempre con un abogado calificado para problemas legales específicos.</span></p>
+        <p id="footer-contact">Contacto: andreidimaavram@gmail.com</p>
     </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
     <script>
-        emailjs.init('hz9CzCgK-LggHycqt'); // Tu user ID de EmailJS
+        // Traducciones
+        const translations = {
+            es: {
+                'about-title': '👤 Sobre Andrei',
+                'about-text1': 'Hola, mi nombre es Andrei Dima. Soy estudiante de Derecho con una profunda pasión por la tecnología, la inteligencia artificial y el asesoramiento jurídico empresarial.',
+                'about-text2': 'Este sitio sirve como mi portal profesional, donde puedes encontrar mis publicaciones, trabajos y una forma directa de contactarme.',
+                'linkedin-link': 'Mi Perfil de LinkedIn',
+                'github-link': 'Mi Repositorio de GitHub',
+                'reports-title': '📚 Informes y Artículos',
+                'reports-subtitle': 'Accede a mis trabajos de investigación y proyectos académicos.',
+                'report1': 'Análisis de los Fondos NewGen de la UE (PDF)',
+                'report2': 'Comentario: Sentencia del Tribunal Supremo (PDF)',
+                'report3': 'Análisis jurídico de los jueces robot (PDF)',
+                'travel-title': '🌍 Mis Viajes',
+                'travel-subtitle': 'Países que he visitado.',
+                'map-show': 'Ver mapa de viajes',
+                'map-hide': 'Ocultar mapa',
+                'contact-title': 'Contacta para una consulta',
+                'contact-subtitle': 'Completa el formulario y un profesional revisará tu caso.',
+                'label-name': 'Nombre:',
+                'label-email': 'Correo electrónico:',
+                'label-phone': 'Teléfono:',
+                'label-description': 'Breve descripción del problema legal:',
+                'label-jurisdiction': 'Jurisdicción o ubicación (ej. ciudad, país):',
+                'btn-submit': 'Enviar',
+                'confirmation-text': '¡Tu consulta ha sido enviada correctamente! Nos pondremos en contacto contigo pronto.',
+                'error-text': 'Ha ocurrido un error al enviar tu consulta. Por favor, inténtalo de nuevo.',
+                'response-thanks': 'Gracias por compartir su problema legal.',
+                'response-general': 'Este servicio proporciona orientación general y no sustituye el asesoramiento profesional.',
+                'response-resources': 'Puede consultar estos recursos:',
+                'response-contact': 'Un profesional revisará su caso y se pondrá en contacto contigo pronto.',
+                'disclaimer-title': 'Descargo de responsabilidad:',
+                'disclaimer-text': 'La información proporcionada en este sitio es solo para fines académicos y no constituye asesoramiento legal. Consulte siempre con un abogado calificado para problemas legales específicos.',
+                'footer-contact': 'Contacto: andreidimaavram@gmail.com'
+            },
+            en: {
+                'about-title': '👤 About Andrei',
+                'about-text1': 'Hello, my name is Andrei Dima. I am a Law student with a deep passion for technology, artificial intelligence, and corporate legal consulting.',
+                'about-text2': 'This site serves as my professional portal, where you can find my publications, work, and a direct way to contact me.',
+                'linkedin-link': 'My LinkedIn Profile',
+                'github-link': 'My GitHub Repository',
+                'reports-title': '📚 Reports and Articles',
+                'reports-subtitle': 'Access my research work and academic projects.',
+                'report1': 'Analysis of EU NewGen Funds (PDF)',
+                'report2': 'Commentary: Supreme Court Ruling (PDF)',
+                'report3': 'Legal analysis of robot judges (PDF)',
+                'travel-title': '🌍 My Travels',
+                'travel-subtitle': 'Countries I have visited.',
+                'map-show': 'Show travel map',
+                'map-hide': 'Hide map',
+                'contact-title': 'Contact for a consultation',
+                'contact-subtitle': 'Complete the form and a professional will review your case.',
+                'label-name': 'Name:',
+                'label-email': 'Email:',
+                'label-phone': 'Phone:',
+                'label-description': 'Brief description of the legal issue:',
+                'label-jurisdiction': 'Jurisdiction or location (e.g. city, country):',
+                'btn-submit': 'Submit',
+                'confirmation-text': 'Your inquiry has been sent successfully! We will contact you soon.',
+                'error-text': 'An error occurred while sending your inquiry. Please try again.',
+                'response-thanks': 'Thank you for sharing your legal issue.',
+                'response-general': 'This service provides general guidance and does not replace professional advice.',
+                'response-resources': 'You can consult these resources:',
+                'response-contact': 'A professional will review your case and contact you soon.',
+                'disclaimer-title': 'Disclaimer:',
+                'disclaimer-text': 'The information provided on this site is for academic purposes only and does not constitute legal advice. Always consult with a qualified attorney for specific legal issues.',
+                'footer-contact': 'Contact: andreidimaavram@gmail.com'
+            }
+        };
+
+        // Sistema de traducción
+        let currentLanguage = localStorage.getItem('preferredLanguage') || 'es';
+
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('preferredLanguage', lang);
+            
+            // Actualizar atributo lang del HTML
+            document.documentElement.lang = lang;
+            
+            // Traducir todos los elementos por ID
+            Object.keys(translations[lang]).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    if (key.includes('link')) {
+                        element.setAttribute('title', translations[lang][key]);
+                    } else {
+                        element.textContent = translations[lang][key];
+                    }
+                }
+            });
+            
+            // Actualizar texto del botón del mapa
+            const mapContent = document.getElementById('mapContent');
+            const mapToggleText = document.getElementById('map-toggle-text');
+            if (mapContent.classList.contains('expanded')) {
+                mapToggleText.textContent = translations[lang]['map-hide'];
+            } else {
+                mapToggleText.textContent = translations[lang]['map-show'];
+            }
+            
+            // Actualizar botones de idioma
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+        }
+
+        // Event listeners para botones de idioma
+        document.querySelectorAll('.lang-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                setLanguage(this.dataset.lang);
+            });
+        });
+
+        // Aplicar idioma inicial
+        setLanguage(currentLanguage);
+
+        // Código del mapa
+        const visitedCountries = ['es', 'fr', 'de', 'it', 'ro', 'cz', 'at', 'ch', 'ie', 'si', 'hu', 'ad', 'mc']; 
+        let chart = null;
+        let animationTimeouts = [];
+
+        function initializeMap() {
+            if (chart) {
+                chart.destroy();
+            }
+            
+            chart = Highcharts.mapChart('map-container', {
+                chart: {
+                    map: 'custom/europe',
+                    backgroundColor: 'transparent',
+                    animation: false
+                },
+                title: { text: '' },
+                mapNavigation: { enabled: false },
+                exporting: { enabled: false },
+                legend: { enabled: false },
+                credits: { enabled: false },
+                tooltip: {
+                    pointFormat: '{point.name}',
+                    backgroundColor: '#fff',
+                    borderColor: '#ccc'
+                },
+                series: [{
+                    data: [],
+                    name: currentLanguage === 'es' ? 'Viajes' : 'Travels',
+                    joinBy: 'hc-key',
+                    states: { 
+                        hover: { 
+                            color: '#21618C',
+                            brightness: 0.1
+                        } 
+                    },
+                    color: '#2874A6', 
+                    nullColor: '#E0E0E0', 
+                    borderColor: '#ffffff',
+                    borderWidth: 1
+                }]
+            });
+        }
+
+        function animateCountries() {
+            animationTimeouts.forEach(timeout => clearTimeout(timeout));
+            animationTimeouts = [];
+            
+            let currentData = [];
+            
+            visitedCountries.forEach((countryCode, index) => {
+                const timeout = setTimeout(() => {
+                    currentData.push({ 
+                        'hc-key': countryCode, 
+                        value: 1,
+                        color: '#2874A6'
+                    });
+                    
+                    chart.series[0].setData([...currentData], false);
+                    chart.redraw(false);
+                }, index * 800);
+                
+                animationTimeouts.push(timeout);
+            });
+        }
+
+        const mapToggle = document.getElementById('mapToggle');
+        const mapContent = document.getElementById('mapContent');
+
+        mapToggle.addEventListener('click', function() {
+            this.classList.toggle('active');
+            mapContent.classList.toggle('expanded');
+            
+            if (mapContent.classList.contains('expanded')) {
+                document.getElementById('map-toggle-text').textContent = translations[currentLanguage]['map-hide'];
+                
+                setTimeout(() => {
+                    initializeMap();
+                }, 400);
+                
+                setTimeout(() => {
+                    animateCountries();
+                }, 600);
+            } else {
+                document.getElementById('map-toggle-text').textContent = translations[currentLanguage]['map-show'];
+                animationTimeouts.forEach(timeout => clearTimeout(timeout));
+                animationTimeouts = [];
+            }
+        });
+
+        // EmailJS
+        emailjs.init('hz9CzCgK-LggHycqt'); 
 
         document.getElementById('legal-form').addEventListener('submit', function(event) {
             event.preventDefault();
             document.getElementById('confirmation').style.display = 'none';
             document.getElementById('error').style.display = 'none';
 
-            // Enviar el email con EmailJS usando tus IDs
             emailjs.send('LegemConnect', 'template_m5tlbo5', {
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
@@ -267,15 +661,22 @@
             .then(function() {
                 document.getElementById('confirmation').style.display = 'block';
                 document.getElementById('legal-form').reset();
+                
+                const lang = currentLanguage;
                 document.getElementById('response').innerHTML = `
-                    Gracias por compartir su problema legal. Este servicio proporciona orientación general y no sustituye el asesoramiento profesional. Puede consultar estos recursos: 
-                    <a href='http://www.internationallegalaidgroup.org/' target='_blank'>International Legal Aid Group</a>, 
-                    <a href='https://www.lawyers.com/' target='_blank'>Lawyers.com</a>. 
-                    Un profesional revisará su caso y se pondrá en contacto contigo pronto.
+                    <p><strong>${translations[lang]['response-thanks']}</strong></p>
+                    <p>${translations[lang]['response-general']}</p>
+                    <p>${translations[lang]['response-resources']}</p>
+                    <ul style="text-align: left; margin-top: 5px;">
+                        <li><a href='http://www.internationallegalaidgroup.org/' target='_blank'>International Legal Aid Group</a></li>
+                        <li><a href='https://www.lawyers.com/' target='_blank'>Lawyers.com</a></li>
+                    </ul>
+                    <p>${translations[lang]['response-contact']}</p>
                 `;
                 document.getElementById('response').style.display = 'block';
             }, function(error) {
                 document.getElementById('error').style.display = 'block';
+                console.error('Error:', error);
             });
         });
     </script>
