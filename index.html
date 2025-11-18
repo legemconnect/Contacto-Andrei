@@ -376,6 +376,244 @@
                 </li>
             </ul>
         </section>
+        <!-- ===== INICIO: WIDGET QUIZ INSERTADO AUTOMÁTICAMENTE (50 tarjetas) ===== -->
+        <section id="andi-quiz-section" class="andi-quiz-section new-section" aria-label="Mini-quiz de vocabulario">
+          <h3 id="andi-quiz-title">🔎 Mini Quiz</h3>
+
+          <div class="andi-quiz-card" role="group" aria-labelledby="andi-quiz-term-text">
+            <div class="andi-quiz-term" id="andi-quiz-term">
+              <span class="muted">Concepto:</span>
+              <strong id="andi-quiz-term-text">abogado</strong>
+            </div>
+
+            <div class="andi-quiz-answer" id="andi-quiz-answer" aria-hidden="true">lawyer</div>
+
+            <div class="andi-quiz-controls">
+              <button id="andi-btn-reveal" class="andi-quiz-btn" type="button">Revelar respuesta</button>
+              <button id="andi-btn-next" class="andi-quiz-btn light" type="button">Siguiente</button>
+            </div>
+          </div>
+        </section>
+
+        <style>
+          /* ====== Estilos del quiz (autocontenidos para evitar conflictos) ====== */
+          .andi-quiz-section { margin: 18px 0; font-family: inherit; }
+          .andi-quiz-card {
+            background: linear-gradient(180deg, rgba(255,255,255,0.97), #fbfdff);
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 8px 26px rgba(33,97,132,0.06);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: stretch;
+            max-width: 720px;
+            margin: 0 auto;
+            border: 1px solid rgba(20,40,60,0.03);
+          }
+          .andi-quiz-term {
+            font-size: 1.15rem;
+            text-align: center;
+            color: var(--secondary, #254b63);
+          }
+          .andi-quiz-term .muted { color: #6b7a83; font-weight: 600; margin-right: 8px; font-size: 0.92rem; }
+          .andi-quiz-answer {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 360ms ease, opacity 260ms ease, padding 260ms ease;
+            text-align: center;
+            padding: 0 12px;
+            font-weight: 700;
+            font-size: 1.08rem;
+            border-radius: 8px;
+            border: 1px dashed rgba(33,97,140,0.06);
+            background: linear-gradient(90deg, rgba(33,97,140,0.03), rgba(40,116,166,0.02));
+          }
+          .andi-quiz-answer.revealed {
+            max-height: 200px;
+            opacity: 1;
+            padding: 12px;
+          }
+          .andi-quiz-controls {
+            display:flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 6px;
+          }
+          .andi-quiz-btn {
+            border: none;
+            background: var(--primary, #2b86c6);
+            color: white;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(40,116,166,0.12);
+            transition: transform 120ms ease, opacity 120ms ease;
+          }
+          .andi-quiz-btn:active { transform: translateY(1px); }
+          .andi-quiz-btn.light {
+            background: white;
+            color: var(--primary, #2b86c6);
+            border: 1px solid #e6eef6;
+            font-weight: 600;
+            box-shadow: none;
+          }
+          .andi-quiz-btn[disabled] { opacity: 0.6; cursor: default; }
+          @media (max-width: 540px) {
+            .andi-quiz-card { padding: 14px; }
+            .andi-quiz-term { font-size: 1rem; }
+            .andi-quiz-answer { font-size: 1rem; }
+          }
+        </style>
+
+        <script>
+        (function() {
+          const section = document.getElementById('andi-quiz-section');
+          if (!section) return;
+
+          const termTextEl = document.getElementById('andi-quiz-term-text');
+          const answerEl = document.getElementById('andi-quiz-answer');
+          const btnReveal = document.getElementById('andi-btn-reveal');
+          const btnNext = document.getElementById('andi-btn-next');
+          const titleEl = document.getElementById('andi-quiz-title');
+
+          const flashcards = [
+            { es:{q:'abogado', a:'lawyer'}, en:{q:'lawyer', a:'abogado'} },
+            { es:{q:'contrato', a:'contract'}, en:{q:'contract', a:'contrato'} },
+            { es:{q:'jurisdicción', a:'jurisdiction'}, en:{q:'jurisdiction', a:'jurisdicción'} },
+            { es:{q:'apelación', a:'appeal'}, en:{q:'appeal', a:'apelación'} },
+            { es:{q:'demanda', a:'lawsuit'}, en:{q:'lawsuit', a:'demanda'} },
+            { es:{q:'testimonio', a:'testimony'}, en:{q:'testimony', a:'testimonio'} },
+            { es:{q:'veredicto', a:'verdict'}, en:{q:'verdict', a:'veredicto'} },
+            { es:{q:'ley', a:'law'}, en:{q:'law', a:'ley'} },
+            { es:{q:'juez', a:'judge'}, en:{q:'judge', a:'juez'} },
+            { es:{q:'tribunal', a:'court'}, en:{q:'court', a:'tribunal'} },
+            { es:{q:'fiscal', a:'prosecutor'}, en:{q:'prosecutor', a:'fiscal'} },
+            { es:{q:'defensa', a:'defense'}, en:{q:'defense', a:'defensa'} },
+            { es:{q:'negligencia', a:'negligence'}, en:{q:'negligence', a:'negligencia'} },
+            { es:{q:'cláusula', a:'clause'}, en:{q:'clause', a:'cláusula'} },
+            { es:{q:'sentencia', a:'sentence'}, en:{q:'sentence', a:'sentencia'} },
+            { es:{q:'audiencia', a:'hearing'}, en:{q:'hearing', a:'audiencia'} },
+            { es:{q:'notificación', a:'notice'}, en:{q:'notice', a:'notificación'} },
+            { es:{q:'jurado', a:'jury'}, en:{q:'jury', a:'jurado'} },
+            { es:{q:'infracción', a:'offense'}, en:{q:'offense', a:'infracción'} },
+            { es:{q:'recurso', a:'remedy'}, en:{q:'remedy', a:'recurso'} },
+            { es:{q:'arbitraje', a:'arbitration'}, en:{q:'arbitration', a:'arbitraje'} },
+            { es:{q:'mediación', a:'mediation'}, en:{q:'mediation', a:'mediación'} },
+            { es:{q:'estatuto', a:'statute'}, en:{q:'statute', a:'estatuto'} },
+            { es:{q:'precedente', a:'precedent'}, en:{q:'precedent', a:'precedente'} },
+            { es:{q:'soberanía', a:'sovereignty'}, en:{q:'sovereignty', a:'soberanía'} },
+            { es:{q:'propiedad', a:'property'}, en:{q:'property', a:'propiedad'} },
+            { es:{q:'hipoteca', a:'mortgage'}, en:{q:'mortgage', a:'hipoteca'} },
+            { es:{q:'garantía', a:'warranty'}, en:{q:'warranty', a:'garantía'} },
+            { es:{q:'incumplimiento', a:'breach'}, en:{q:'breach', a:'incumplimiento'} },
+            { es:{q:'contrato de trabajo', a:'employment contract'}, en:{q:'employment contract', a:'contrato de trabajo'} },
+            { es:{q:'licencia', a:'license'}, en:{q:'license', a:'licencia'} },
+            { es:{q:'patente', a:'patent'}, en:{q:'patent', a:'patente'} },
+            { es:{q:'marca', a:'trademark'}, en:{q:'trademark', a:'marca'} },
+            { es:{q:'confidencialidad', a:'confidentiality'}, en:{q:'confidentiality', a:'confidencialidad'} },
+            { es:{q:'privacidad', a:'privacy'}, en:{q:'privacy', a:'privacidad'} },
+            { es:{q:'consentimiento', a:'consent'}, en:{q:'consent', a:'consentimiento'} },
+            { es:{q:'testamento', a:'will'}, en:{q:'will', a:'testamento'} },
+            { es:{q:'herencia', a:'inheritance'}, en:{q:'inheritance', a:'herencia'} },
+            { es:{q:'tutela', a:'guardianship'}, en:{q:'guardianship', a:'tutela'} },
+            { es:{q:'contrato de compraventa', a:'sales contract'}, en:{q:'sales contract', a:'contrato de compraventa'} },
+            { es:{q:'impuestos', a:'taxes'}, en:{q:'taxes', a:'impuestos'} },
+            { es:{q:'fraude', a:'fraud'}, en:{q:'fraud', a:'fraude'} },
+            { es:{q:'coartada', a:'alibi'}, en:{q:'alibi', a:'coartada'} },
+            { es:{q:'citación', a:'subpoena'}, en:{q:'subpoena', a:'citación'} },
+            { es:{q:'fianza', a:'bail'}, en:{q:'bail', a:'fianza'} },
+            { es:{q:'ejecución hipotecaria', a:'foreclosure'}, en:{q:'foreclosure', a:'ejecución hipotecaria'} },
+            { es:{q:'corrupción', a:'corruption'}, en:{q:'corruption', a:'corrupción'} },
+            { es:{q:'derecho penal', a:'criminal law'}, en:{q:'criminal law', a:'derecho penal'} },
+            { es:{q:'derecho civil', a:'civil law'}, en:{q:'civil law', a:'derecho civil'} },
+            { es:{q:'cláusula penal', a:'penalty clause'}, en:{q:'penalty clause', a:'cláusula penal'} }
+          ];
+
+          let idx = 0;
+
+          const localTranslations = {
+            es: {
+              'quiz-title': '🔎 Mini Quiz de Inglés',
+              'quiz-reveal': 'Revelar traducción',
+              'quiz-hide': 'Ocultar respuesta',
+              'quiz-next': 'Siguiente'
+            },
+            en: {
+              'quiz-title': '🔎 Quick Spanish Quiz',
+              'quiz-reveal': 'Reveal translation',
+              'quiz-hide': 'Hide answer',
+              'quiz-next': 'Next'
+            }
+          };
+
+          function getLang() {
+            if (window.currentLanguage && typeof window.currentLanguage === 'string') return window.currentLanguage;
+            const htmlLang = document.documentElement && document.documentElement.lang;
+            if (htmlLang) return htmlLang.split('-')[0];
+            return 'es';
+          }
+
+          function t(key) {
+            const lang = getLang();
+            try {
+              if (window.translations && window.translations[lang] && window.translations[lang][key]) {
+                return window.translations[lang][key];
+              }
+            } catch (e) { }
+            return (localTranslations[lang] && localTranslations[lang][key]) || localTranslations['es'][key] || key;
+          }
+
+          function renderCard() {
+            const lang = getLang();
+            const card = flashcards[idx];
+            if (!card || !card[lang]) {
+              termTextEl.textContent = '—';
+              answerEl.textContent = '—';
+              return;
+            }
+            termTextEl.textContent = card[lang].q;
+            answerEl.textContent = card[lang].a;
+            answerEl.classList.remove('revealed');
+            answerEl.setAttribute('aria-hidden', 'true');
+            titleEl.textContent = t('quiz-title');
+            btnReveal.textContent = t('quiz-reveal');
+            btnNext.textContent = t('quiz-next');
+          }
+
+          btnReveal.addEventListener('click', function() {
+            const revealed = answerEl.classList.toggle('revealed');
+            answerEl.setAttribute('aria-hidden', revealed ? 'false' : 'true');
+            btnReveal.textContent = revealed ? t('quiz-hide') : t('quiz-reveal');
+          });
+
+          btnNext.addEventListener('click', function() {
+            idx = (idx + 1) % flashcards.length;
+            renderCard();
+            try { btnNext.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(-3px)' }, { transform: 'translateY(0)' }], { duration: 220 }); } catch(e){}
+          });
+
+          document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+              setTimeout(renderCard, 80);
+            });
+          });
+
+          renderCard();
+
+          window._andiQuiz = {
+            next: () => { btnNext.click(); },
+            reveal: () => { if (!answerEl.classList.contains('revealed')) btnReveal.click(); },
+            currentIndex: () => idx,
+            total: () => flashcards.length
+          };
+
+        })();
+        </script>
+        <!-- ===== FIN: WIDGET QUIZ INSERTADO AUTOMÁTICAMENTE ===== -->
+
 
         <section id="mis-viajes" class="new-section">
             <h3 id="travel-title">🌍 Mis Viajes</h3>
