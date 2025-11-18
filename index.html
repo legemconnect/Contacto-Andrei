@@ -1,207 +1,280 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Contacta con Andrei</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Font Awesome para iconos -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  <style>
-    :root {
-      --primary: #2874A6;
-      --secondary: #21618C;
-      --success-bg: #d4efdf;
-      --success-border: #27ae60;
-      --error-bg: #fadbd8;
-      --error-border: #c0392b;
-      --error-color: #922b21;
-      --radius: 8px;
-    }
-    body {
-      background: linear-gradient(135deg, #eaf6fb 0%, #f9f9f9 100%);
-      min-height: 100vh;
-      margin: 0;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      color: #333;
-    }
-    .container {
-      max-width: 480px;
-      margin: 46px auto;
-      background: #fff;
-      box-shadow: 0 6px 32px rgba(40, 116, 166, 0.08);
-      border-radius: var(--radius);
-      padding: 36px 30px 28px 30px;
-      animation: fadeIn 1.2s;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(40px);}
-      to { opacity: 1; transform: translateY(0);}
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 16px;
-      color: var(--primary);
-      font-size: 2em;
-      font-weight: 700;
-    }
-    .subtitle {
-      text-align: center;
-      color: #555;
-      margin-bottom: 28px;
-      font-size: 1.08em;
-      font-weight: 400;
-    }
-    label {
-      font-weight: 500;
-      margin-top: 18px;
-      display: block;
-      margin-bottom: 5px;
-    }
-    input, textarea {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: var(--radius);
-      border: 1.2px solid #d6d6d6;
-      font-size: 1em;
-      transition: border-color 0.18s;
-      margin-bottom: 8px;
-      outline: none;
-      background: #f8fafd;
-    }
-    input:focus, textarea:focus {
-      border-color: var(--primary);
-      background: #f4faff;
-    }
-    textarea {
-      resize: vertical;
-      min-height: 90px;
-      max-height: 200px;
-    }
-    button[type="submit"] {
-      width: 100%;
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      padding: 13px 0;
-      margin-top: 18px;
-      border-radius: var(--radius);
-      font-size: 1.09em;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      cursor: pointer;
-      transition: background 0.18s, transform 0.11s;
-      box-shadow: 0 2px 12px rgba(40,116,166,0.05);
-    }
-    button[type="submit"]:hover {
-      background: var(--secondary);
-      transform: scale(1.015);
-    }
-    .confirmation, .error {
-      display: none;
-      padding: 15px;
-      margin-top: 18px;
-      border-radius: var(--radius);
-      text-align: center;
-      font-size: 1.02em;
-      animation: fadeIn 0.7s;
-    }
-    .confirmation {
-      background: var(--success-bg);
-      border: 1px solid var(--success-border);
-      color: #145a32;
-    }
-    .error {
-      background: var(--error-bg);
-      border: 1px solid var(--error-border);
-      color: var(--error-color);
-    }
-    .icon {
-      margin-right: 8px;
-      font-size: 1.15em;
-    }
-    footer {
-      max-width: 480px;
-      margin: 18px auto 12px auto;
-      font-size: 0.95em;
-      color: #444;
-      padding: 0 18px;
-      text-align: center;
-    }
-    footer strong {
-      color: #922b21;
-    }
-    a { color: var(--primary); text-decoration: underline; }
-    @media (max-width: 540px) {
-      .container { max-width: 96vw; padding: 24px 5vw; }
-      footer { max-width: 98vw; padding: 0 5vw; }
-      h2 { font-size: 1.3em; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Andrei Dima | Perfil y Contacto</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2874A6;
+            --secondary: #21618C;
+            --success-bg: #d4efdf;
+            --success-border: #27ae60;
+            --error-bg: #fadbd8;
+            --error-border: #c0392b;
+            --error-color: #922b21;
+            --radius: 8px;
+        }
+        body {
+            background: linear-gradient(135deg, #eaf6fb 0%, #f9f9f9 100%);
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #333;
+        }
+        .container {
+            max-width: 480px;
+            margin: 46px auto;
+            background: #fff;
+            box-shadow: 0 6px 32px rgba(40, 116, 166, 0.08);
+            border-radius: var(--radius);
+            padding: 36px 30px 28px 30px;
+            animation: fadeIn 1.2s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 16px;
+            color: var(--primary);
+            font-size: 2em;
+            font-weight: 700;
+        }
+        .subtitle {
+            text-align: center;
+            color: #555;
+            margin-bottom: 28px;
+            font-size: 1.08em;
+            font-weight: 400;
+        }
+        label {
+            font-weight: 500;
+            margin-top: 18px;
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: var(--radius);
+            border: 1.2px solid #d6d6d6;
+            font-size: 1em;
+            transition: border-color 0.18s;
+            margin-bottom: 8px;
+            outline: none;
+            background: #f8fafd;
+        }
+        input:focus, textarea:focus {
+            border-color: var(--primary);
+            background: #f4faff;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 90px;
+            max-height: 200px;
+        }
+        button[type="submit"] {
+            width: 100%;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 13px 0;
+            margin-top: 18px;
+            border-radius: var(--radius);
+            font-size: 1.09em;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: background 0.18s, transform 0.11s;
+            box-shadow: 0 2px 12px rgba(40,116,166,0.05);
+        }
+        button[type="submit"]:hover {
+            background: var(--secondary);
+            transform: scale(1.015);
+        }
+        .confirmation, .error {
+            display: none;
+            padding: 15px;
+            margin-top: 18px;
+            border-radius: var(--radius);
+            text-align: center;
+            font-size: 1.02em;
+            animation: fadeIn 0.7s;
+        }
+        .confirmation {
+            background: var(--success-bg);
+            border: 1px solid var(--success-border);
+            color: #145a32;
+        }
+        .error {
+            background: var(--error-bg);
+            border: 1px solid var(--error-border);
+            color: var(--error-color);
+        }
+        .icon {
+            margin-right: 8px;
+            font-size: 1.15em;
+        }
+        footer {
+            max-width: 480px;
+            margin: 18px auto 12px auto;
+            font-size: 0.95em;
+            color: #444;
+            padding: 0 18px;
+            text-align: center;
+        }
+        footer strong {
+            color: #922b21;
+        }
+        a { color: var(--primary); text-decoration: underline; }
+
+        /* Estilos específicos para las nuevas secciones */
+        .new-section {
+            border-bottom: 1px solid #eee; /* Separador sutil */
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+            text-align: left; /* Alineación de texto para párrafos y listas */
+        }
+        .new-section:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .new-section h3 {
+            color: var(--secondary);
+            font-size: 1.5em;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .new-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .new-section ul li {
+            margin-bottom: 10px;
+        }
+        .new-section ul li a {
+            display: block;
+            padding: 8px 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: var(--radius);
+            background: #fdfdfd;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .new-section ul li a:hover {
+            background: #f4faff;
+            border-color: var(--primary);
+        }
+
+        @media (max-width: 540px) {
+            .container { max-width: 96vw; padding: 24px 5vw; }
+            footer { max-width: 98vw; padding: 0 5vw; }
+            h2 { font-size: 1.8em; } /* Ajuste del h2 principal para móviles */
+            .new-section h3 { font-size: 1.3em; }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h2><i class="fa-solid fa-gavel icon"></i>Contacta con Andrei</h2>
-    <div class="subtitle">Completa el formulario y un profesional revisará tu caso.</div>
-    <form id="legal-form">
-      <label for="name">Nombre:</label>
-      <input type="text" id="name" name="name" required autofocus>
-      <label for="email">Correo electrónico:</label>
-      <input type="email" id="email" name="email" required>
-      <label for="phone">Teléfono:</label>
-      <input type="tel" id="phone" name="phone" required>
-      <label for="description">Breve descripción del problema legal:</label>
-      <textarea id="description" name="description" required rows="5"></textarea>
-      <label for="jurisdiction">Jurisdicción o ubicación (ej. ciudad, país):</label>
-      <input type="text" id="jurisdiction" name="jurisdiction" required>
-      <button type="submit"><i class="fa-solid fa-paper-plane icon"></i>Enviar</button>
-    </form>
-    <div id="confirmation" class="confirmation">
-      <i class="fa-solid fa-check-circle icon"></i>
-      ¡Tu consulta ha sido enviada correctamente! Nos pondremos en contacto contigo pronto.
+    <div class="container">
+        
+        <section id="sobre-mi" class="new-section">
+            <h3>👤 Sobre Andrei</h3>
+            <p>Hola, mi nombre es Andrei Dima. Soy estudiante de Derecho con una profunda pasión por la tecnología, la inteligencia artificial y el asesoramiento jurídico empresarial.</p>
+            <p>Este sitio sirve como mi portal profesional, donde puedes encontrar mis publicaciones, trabajos y una forma directa de contactarme.</p>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="https://es.linkedin.com/" target="_blank" title="Mi Perfil de LinkedIn" style="margin: 0 10px;"><i class="fa-brands fa-linkedin" style="font-size: 2em; color: var(--primary);"></i></a>
+                <a href="https://www.youtube.com/watch?v=niPExbK8lSw" target="_blank" title="Mi Repositorio de GitHub" style="margin: 0 10px;"><i class="fa-brands fa-github" style="font-size: 2em; color: var(--primary);"></i></a>
+            </div>
+        </section>
+
+        <section id="mis-informes" class="new-section">
+            <h3>📚 Informes y Artículos</h3>
+            <p>Accede a mis trabajos de investigación y proyectos académicos.</p>
+            <ul>
+                <li>
+                    <a href="reports/informe_analisis.pdf" target="_blank">
+                        <i class="fa-solid fa-file-pdf icon"></i>Informe de Análisis de [**Tema del informe**] (PDF)
+                    </a>
+                </li>
+                <li>
+                    <a href="reports/articulo_investigacion.md" target="_blank">
+                        <i class="fa-solid fa-file-alt icon"></i>Artículo: [**Título del Artículo**] sobre la Tecnología Y
+                    </a>
+                </li>
+                <li>
+                    <a href="reports/presentacion_proyecto.pdf" target="_blank">
+                        <i class="fa-solid fa-file-powerpoint icon"></i>Presentación: [**Título del Proyecto**] (PDF)
+                    </a>
+                </li>
+            </ul>
+        </section>
+        
+        <section id="formulario-contacto">
+            <h2><i class="fa-solid fa-gavel icon"></i>Contacta para una Consulta</h2>
+            <div class="subtitle">Completa el formulario y un profesional revisará tu caso.</div>
+            <form id="legal-form">
+                <label for="name">Nombre:</label>
+                <input type="text" id="name" name="name" required autofocus>
+                <label for="email">Correo electrónico:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="phone">Teléfono:</label>
+                <input type="tel" id="phone" name="phone" required>
+                <label for="description">Breve descripción del problema legal:</label>
+                <textarea id="description" name="description" required rows="5"></textarea>
+                <label for="jurisdiction">Jurisdicción o ubicación (ej. ciudad, país):</label>
+                <input type="text" id="jurisdiction" name="jurisdiction" required>
+                <button type="submit"><i class="fa-solid fa-paper-plane icon"></i>Enviar</button>
+            </form>
+            <div id="confirmation" class="confirmation">
+                <i class="fa-solid fa-check-circle icon"></i>
+                ¡Tu consulta ha sido enviada correctamente! Nos pondremos en contacto contigo pronto.
+            </div>
+            <div id="error" class="error">
+                <i class="fa-solid fa-triangle-exclamation icon"></i>
+                Ha ocurrido un error al enviar tu consulta. Por favor, inténtalo de nuevo.
+            </div>
+            <div id="response" style="display:none;"></div>
+        </section>
     </div>
-    <div id="error" class="error">
-      <i class="fa-solid fa-triangle-exclamation icon"></i>
-      Ha ocurrido un error al enviar tu consulta. Por favor, inténtalo de nuevo.
-    </div>
-    <div id="response" style="display:none;"></div>
-  </div>
-  <footer>
-    <p><strong>Descargo de responsabilidad:</strong> La información proporcionada en este sitio es solo para fines generales y no constituye asesoramiento legal. Consulte siempre con un abogado calificado para problemas legales específicos.</p>
-    <p>Contacto: andreidimaavram@gmail.com</p>
-  </footer>
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-  <script>
-    emailjs.init('hz9CzCgK-LggHycqt'); // Tu user ID de EmailJS
+    <footer>
+        <p><strong>Descargo de responsabilidad:</strong> La información proporcionada en este sitio es solo para fines generales y no constituye asesoramiento legal. Consulte siempre con un abogado calificado para problemas legales específicos.</p>
+        <p>Contacto: andreidimaavram@gmail.com</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>
+        emailjs.init('hz9CzCgK-LggHycqt'); // Tu user ID de EmailJS
 
-    document.getElementById('legal-form').addEventListener('submit', function(event) {
-      event.preventDefault();
-      document.getElementById('confirmation').style.display = 'none';
-      document.getElementById('error').style.display = 'none';
+        document.getElementById('legal-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            document.getElementById('confirmation').style.display = 'none';
+            document.getElementById('error').style.display = 'none';
 
-      // Validación JS extra removida para teléfono
-
-      // Enviar el email con EmailJS usando tus IDs
-      emailjs.send('LegemConnect', 'template_m5tlbo5', {
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        description: document.getElementById('description').value,
-        jurisdiction: document.getElementById('jurisdiction').value
-      })
-      .then(function() {
-        document.getElementById('confirmation').style.display = 'block';
-        document.getElementById('legal-form').reset();
-        document.getElementById('response').innerHTML = `
-          Gracias por compartir su problema legal. Este servicio proporciona orientación general y no sustituye el asesoramiento profesional. Puede consultar estos recursos: 
-          <a href='http://www.internationallegalaidgroup.org/' target='_blank'>International Legal Aid Group</a>, 
-          <a href='https://www.lawyers.com/' target='_blank'>Lawyers.com</a>. 
-          Un profesional revisará su caso y se pondrá en contacto contigo pronto.
-        `;
-        document.getElementById('response').style.display = 'block';
-      }, function(error) {
-        document.getElementById('error').style.display = 'block';
-      });
-    });
-  </script>
+            // Enviar el email con EmailJS usando tus IDs
+            emailjs.send('LegemConnect', 'template_m5tlbo5', {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                description: document.getElementById('description').value,
+                jurisdiction: document.getElementById('jurisdiction').value
+            })
+            .then(function() {
+                document.getElementById('confirmation').style.display = 'block';
+                document.getElementById('legal-form').reset();
+                document.getElementById('response').innerHTML = `
+                    Gracias por compartir su problema legal. Este servicio proporciona orientación general y no sustituye el asesoramiento profesional. Puede consultar estos recursos: 
+                    <a href='http://www.internationallegalaidgroup.org/' target='_blank'>International Legal Aid Group</a>, 
+                    <a href='https://www.lawyers.com/' target='_blank'>Lawyers.com</a>. 
+                    Un profesional revisará su caso y se pondrá en contacto contigo pronto.
+                `;
+                document.getElementById('response').style.display = 'block';
+            }, function(error) {
+                document.getElementById('error').style.display = 'block';
+            });
+        });
+    </script>
 </body>
 </html>
