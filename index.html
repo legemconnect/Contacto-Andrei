@@ -37,7 +37,11 @@
             line-height: 1.6;
             min-height: 100vh;
             overflow-x: hidden;
+            transition: opacity 0.2s ease-in-out; 
+            opacity: 1;
         }
+
+        body.fading { opacity: 0.8; }
 
         /* --- 2. LAYOUT --- */
         .main-wrapper {
@@ -66,7 +70,6 @@
             z-index: 10;
         }
 
-        /* LOGO UJI RECTANGULAR */
         .profile-img-wrapper {
             width: 140px; 
             height: 140px;
@@ -80,12 +83,8 @@
         }
 
         .profile-img-wrapper img {
-            width: 100%; 
-            height: 100%; 
-            object-fit: contain; /* Ajuste perfecto para logo rectangular */
-            border-radius: 14px; 
-            background: #fff; 
-            border: 3px solid var(--bg-card);
+            width: 100%; height: 100%; object-fit: contain;
+            border-radius: 14px; background: #fff; border: 3px solid var(--bg-card);
         }
 
         .sidebar h3 {
@@ -139,6 +138,7 @@
         .andi-quiz-term strong {
             display: block; font-size: 2rem; font-family: var(--font-display);
             color: #fff; margin: 10px 0;
+            transition: color 0.3s;
         }
         .andi-quiz-answer {
             background: #064e3b; color: #6ee7b7; padding: 10px;
@@ -163,7 +163,6 @@
         .map-content.expanded { max-height: 600px; opacity: 1; margin-top: 20px; }
         #map-container { height: 500px; width: 100%; border-radius: 8px; background: #182333; }
 
-        /* Tooltip */
         .custom-tooltip {
             padding: 12px; text-align: center; color: #333;
             width: 200px; transition: width 0.3s ease;
@@ -189,6 +188,10 @@
             width: 100%; padding: 14px; margin-top: 25px;
             background: var(--accent-primary); color: #0f172a;
             border: none; font-weight: 700; border-radius: 6px; cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        button[type="submit"].loading {
+            background: #475569; color: #94a3b8; cursor: not-allowed;
         }
 
         .language-selector { margin-bottom: 20px; display: flex; justify-content: center; gap: 10px; }
@@ -200,9 +203,12 @@
         .lang-btn.active { background: var(--accent-primary); color: #0f172a; border-color: var(--accent-primary); font-weight: bold; }
 
         footer { margin-top: 50px; text-align: center; font-size: 0.8rem; color: var(--text-muted); padding-bottom: 20px;}
-        .confirmation, .error { padding: 15px; border-radius: 6px; margin-top: 15px; display: none; text-align: center; }
-        .confirmation { background: #064e3b; color: #6ee7b7; }
-        .error { background: #7f1d1d; color: #fca5a5; }
+        .confirmation, .error { 
+            padding: 15px; border-radius: 6px; margin-top: 15px; display: none; text-align: center; 
+            animation: slideIn 0.4s ease-out;
+        }
+        .confirmation { background: #064e3b; color: #6ee7b7; border: 1px solid #047857; }
+        .error { background: #7f1d1d; color: #fca5a5; border: 1px solid #b91c1c; }
 
         @media (max-width: 850px) {
             .main-wrapper { grid-template-columns: 1fr; gap: 30px; padding: 20px 15px; }
@@ -212,6 +218,7 @@
         }
         
         @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+        @keyframes slideIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -252,7 +259,7 @@
                     <li>
                         <a href="reports/Fondos NewGen.pdf" target="_blank" class="link-card">
                             <i class="fa-solid fa-earth-europe"></i>
-                            <span id="report1">Análisis de los Fondos NewGen de la UE</span>
+                            <span id="report1">Fondos NewGen UE: Análisis Jurídico</span>
                         </a>
                     </li>
                     <li>
@@ -352,19 +359,19 @@
     </div>
 
     <script>
-        /* ================= DATOS MAPA (CONFIG ORIGINAL + TRADUCCIONES) ================= */
+        /* ================= DATOS MAPA (RUTAS LOCALES) ================= */
         const visitedCountriesData = [
-            { code: 'es', name: {es: 'España', en: 'Spain'}, text: {es: 'Mi hogar y base de mi educación.', en: 'My home and the base of my education.'}, imgs: ['https://via.placeholder.com/300x200?text=Espana+1','https://via.placeholder.com/300x200?text=Espana+2','https://via.placeholder.com/300x200?text=Espana+3','https://via.placeholder.com/300x200?text=Espana+4'] },
-            { code: 'fr', name: {es: 'Francia', en: 'France'}, text: {es: 'Viaje a Francia.', en: 'Trip to France.'}, imgs: ['https://via.placeholder.com/300x200?text=Francia'] },
-            { code: 'ie', name: {es: 'Irlanda', en: 'Ireland'}, text: {es: 'Experiencia en Irlanda.', en: 'Experience in Ireland.'}, imgs: ['https://via.placeholder.com/300x200?text=Irlanda+1','https://via.placeholder.com/300x200?text=Irlanda+2','https://via.placeholder.com/300x200?text=Irlanda+3'] },
-            { code: 'ch', name: {es: 'Suiza', en: 'Switzerland'}, text: {es: 'Alpes suizos.', en: 'Swiss Alps.'}, imgs: ['https://via.placeholder.com/300x200?text=Suiza'] },
-            { code: 'it', name: {es: 'Italia', en: 'Italy'}, text: {es: 'Bella Italia.', en: 'Beautiful Italy.'}, imgs: ['https://via.placeholder.com/300x200?text=Italia'] },
-            { code: 'de', name: {es: 'Alemania', en: 'Germany'}, text: {es: 'Alemania.', en: 'Germany.'}, imgs: ['https://via.placeholder.com/300x200?text=Alemania'] },
-            { code: 'at', name: {es: 'Austria', en: 'Austria'}, text: {es: 'Austria imperial.', en: 'Imperial Austria.'}, imgs: ['https://via.placeholder.com/300x200?text=Austria+1','https://via.placeholder.com/300x200?text=Austria+2'] },
-            { code: 'cz', name: {es: 'Rep. Checa', en: 'Czech Rep.'}, text: {es: 'Brno: mi segunda casa.', en: 'Brno: my second home.'}, imgs: ['https://via.placeholder.com/300x200?text=Chequia+1','https://via.placeholder.com/300x200?text=Chequia+2','https://via.placeholder.com/300x200?text=Chequia+3','https://via.placeholder.com/300x200?text=Chequia+4'] },
-            { code: 'si', name: {es: 'Eslovenia', en: 'Slovenia'}, text: {es: 'Naturaleza eslovena.', en: 'Slovenian nature.'}, imgs: ['https://via.placeholder.com/300x200?text=Eslovenia'] },
-            { code: 'hu', name: {es: 'Hungría', en: 'Hungary'}, text: {es: 'Budapest.', en: 'Budapest.'}, imgs: ['https://via.placeholder.com/300x200?text=Hungria'] },
-            { code: 'ro', name: {es: 'Rumanía', en: 'Romania'}, text: {es: 'Mis raíces y familia.', en: 'My roots and family.'}, imgs: ['https://via.placeholder.com/300x200?text=Rumania'] },
+            { code: 'es', name: {es: 'España', en: 'Spain'}, text: {es: 'Mi hogar y base de mi educación.', en: 'My home and the base of my education.'}, imgs: ['img/paises/espana_1.jpg','img/paises/espana_2.jpg','img/paises/espana_3.jpg','img/paises/espana_4.jpg'] },
+            { code: 'fr', name: {es: 'Francia', en: 'France'}, text: {es: 'Viaje a Francia.', en: 'Trip to France.'}, imgs: ['img/paises/francia_1.jpg'] },
+            { code: 'ie', name: {es: 'Irlanda', en: 'Ireland'}, text: {es: 'Experiencia en Irlanda.', en: 'Experience in Ireland.'}, imgs: ['img/paises/irlanda_1.jpg','img/paises/irlanda_2.jpg','img/paises/irlanda_3.jpg'] },
+            { code: 'ch', name: {es: 'Suiza', en: 'Switzerland'}, text: {es: 'Alpes suizos.', en: 'Swiss Alps.'}, imgs: ['img/paises/suiza_1.jpg'] },
+            { code: 'it', name: {es: 'Italia', en: 'Italy'}, text: {es: 'Bella Italia.', en: 'Beautiful Italy.'}, imgs: ['img/paises/italia_1.jpg'] },
+            { code: 'de', name: {es: 'Alemania', en: 'Germany'}, text: {es: 'Alemania.', en: 'Germany.'}, imgs: ['img/paises/alemania_1.jpg'] },
+            { code: 'at', name: {es: 'Austria', en: 'Austria'}, text: {es: 'Austria imperial.', en: 'Imperial Austria.'}, imgs: ['img/paises/austria_1.jpg','img/paises/austria_2.jpg'] },
+            { code: 'cz', name: {es: 'Rep. Checa', en: 'Czech Rep.'}, text: {es: 'Brno: mi segunda casa.', en: 'Brno: my second home.'}, imgs: ['img/paises/chequia_1.jpg','img/paises/chequia_2.jpg','img/paises/chequia_3.jpg','img/paises/chequia_4.jpg'] },
+            { code: 'si', name: {es: 'Eslovenia', en: 'Slovenia'}, text: {es: 'Naturaleza eslovena.', en: 'Slovenian nature.'}, imgs: ['img/paises/eslovenia_1.jpg'] },
+            { code: 'hu', name: {es: 'Hungría', en: 'Hungary'}, text: {es: 'Budapest.', en: 'Budapest.'}, imgs: ['img/paises/hungria_1.jpg'] },
+            { code: 'ro', name: {es: 'Rumanía', en: 'Romania'}, text: {es: 'Mis raíces y familia.', en: 'My roots and family.'}, imgs: ['img/paises/rumania_1.jpg'] },
             { code: 'ad', name: {es: 'Andorra', en: 'Andorra'}, text: {es: 'Andorra', en: 'Andorra'}, imgs: [] },
             { code: 'mc', name: {es: 'Mónaco', en: 'Monaco'}, text: {es: 'Mónaco', en: 'Monaco'}, imgs: [] }
         ];
@@ -377,7 +384,7 @@
                 'about-text2': 'Este sitio sirve como mi portal profesional, donde puedes encontrar mis publicaciones, trabajos y una forma directa de contactarme.',
                 'reports-title': 'Trabajos Académicos', 
                 'reports-subtitle': 'Accede a mis trabajos académicos y proyectos.', 
-                'report1': 'Análisis de los Fondos NewGen de la UE', 
+                'report1': 'Fondos NewGen UE: Análisis Jurídico', 
                 'report2': 'Comentario: Sentencia del Tribunal Supremo (191/2021)', 
                 'report3': 'Comentario: Sentencia del Tribunal Supremo (3079/2016)',
                 'report4': 'Análisis Jurídico de los Jueces Robot', 
@@ -392,7 +399,8 @@
                 'response-resources': 'Puede consultar estos recursos:', 
                 'disclaimer-title': 'Descargo de responsabilidad:', 
                 'disclaimer-text': 'La información proporcionada en este sitio es solo para fines académicos y no constituye asesoramiento legal. Consulte siempre con un abogado calificado para problemas legales específicos.', 
-                'quiz-title': 'Quiz Traducción Jurídica', 'quiz-subtitle': 'Adivina la traducción correcta', 'quiz-reveal': 'Revelar', 'quiz-hide': 'Ocultar', 'quiz-next': 'Siguiente'
+                'andi-quiz-title': 'Quiz Traducción Jurídica', 
+                'quiz-subtitle': 'Adivina la traducción correcta', 'quiz-reveal': 'Revelar', 'quiz-hide': 'Ocultar', 'quiz-next': 'Siguiente'
             },
             en: {
                 'about-title': 'Andrei Dima', 
@@ -414,7 +422,8 @@
                 'response-general': 'This service provides general guidance and does not replace professional advice.', 
                 'response-resources': 'You can consult these resources:', 
                 'disclaimer-title': 'Disclaimer:', 'disclaimer-text': 'The information provided on this site is for academic purposes only and does not constitute legal advice. Always consult with a qualified attorney for specific legal issues.', 
-                'quiz-title': 'Legal Translation Quiz', 'quiz-subtitle': 'Guess the correct translation', 'quiz-reveal': 'Reveal', 'quiz-hide': 'Hide', 'quiz-next': 'Next'
+                'andi-quiz-title': 'Legal Translation Quiz', 
+                'quiz-subtitle': 'Guess the correct translation', 'quiz-reveal': 'Reveal', 'quiz-hide': 'Hide', 'quiz-next': 'Next'
             }
         };
 
@@ -476,38 +485,41 @@
         let currentQuizIndex = 0;
 
         function setLanguage(lang) {
-            currentLanguage = lang;
-            localStorage.setItem('preferredLanguage', lang);
-            document.documentElement.lang = lang;
-            Object.keys(translations[lang]).forEach(key => {
-                const element = document.getElementById(key);
-                if (element) {
-                    if(key.includes('link')) element.setAttribute('title', translations[lang][key]);
-                    else if(element.tagName === 'INPUT') element.placeholder = translations[lang]['label-jurisdiction'].replace(':', ''); // Pequeño ajuste para el placeholder
-                    else element.textContent = translations[lang][key];
+            document.body.classList.add('fading');
+            setTimeout(() => {
+                currentLanguage = lang;
+                localStorage.setItem('preferredLanguage', lang);
+                document.documentElement.lang = lang;
+                Object.keys(translations[lang]).forEach(key => {
+                    const element = document.getElementById(key);
+                    if (element) {
+                        if(key.includes('link')) element.setAttribute('title', translations[lang][key]);
+                        else if(element.tagName === 'INPUT') element.placeholder = translations[lang]['label-jurisdiction'].replace(':', '');
+                        else element.textContent = translations[lang][key];
+                    }
+                });
+                const jurisdictionInput = document.getElementById('jurisdiction');
+                if(jurisdictionInput) {
+                    jurisdictionInput.placeholder = lang === 'es' ? 'Ej: Madrid, España' : 'E.g: Madrid, Spain';
                 }
-            });
-            // Ajuste específico del placeholder al cambiar idioma
-             const jurisdictionInput = document.getElementById('jurisdiction');
-             if(jurisdictionInput) {
-                jurisdictionInput.placeholder = lang === 'es' ? 'Ej: Madrid, España' : 'E.g: Madrid, Spain';
-             }
 
-            const mapContent = document.getElementById('mapContent');
-            const mapToggleText = document.getElementById('map-toggle-text');
-            if (mapContent.classList.contains('expanded')) {
-                mapToggleText.textContent = translations[lang]['map-hide'];
-            } else {
-                mapToggleText.textContent = translations[lang]['map-show'];
-            }
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.lang === lang);
-            });
-            renderQuizCard();
-            if(mapChart) {
-                mapChart.series[0].update({ name: currentLanguage === 'es' ? 'Viajes' : 'Travels' });
-                initMap();
-            }
+                const mapContent = document.getElementById('mapContent');
+                const mapToggleText = document.getElementById('map-toggle-text');
+                if (mapContent.classList.contains('expanded')) {
+                    mapToggleText.textContent = translations[lang]['map-hide'];
+                } else {
+                    mapToggleText.textContent = translations[lang]['map-show'];
+                }
+                document.querySelectorAll('.lang-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.lang === lang);
+                });
+                renderQuizCard();
+                if(mapChart) {
+                    mapChart.series[0].update({ name: currentLanguage === 'es' ? 'Viajes' : 'Travels' });
+                    initMap();
+                }
+                document.body.classList.remove('fading');
+            }, 200); 
         }
 
         document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.lang)));
@@ -637,13 +649,23 @@
         document.getElementById('legal-form').addEventListener('submit', function(event) {
             event.preventDefault();
             const btn = document.getElementById('btn-submit');
-            btn.textContent = '...';
+            const originalText = btn.textContent;
+            
+            // ANIMACIÓN BOTÓN
+            btn.classList.add('loading');
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Enviando...';
+            
             document.getElementById('confirmation').style.display = 'none';
             document.getElementById('error').style.display = 'none';
+            
             emailjs.sendForm('LegemConnect', 'template_m5tlbo5', this).then(function() {
                 document.getElementById('confirmation').style.display = 'block';
                 document.getElementById('legal-form').reset();
-                btn.textContent = 'Enviar Consulta';
+                
+                // RESTAURAR BOTÓN
+                btn.classList.remove('loading');
+                btn.innerHTML = originalText;
+                
                 const lang = currentLanguage;
                 const responseDiv = document.getElementById('response');
                 
@@ -658,7 +680,8 @@
                 responseDiv.style.display = 'block';
             }, function(error) {
                 document.getElementById('error').style.display = 'block';
-                btn.textContent = 'Enviar Consulta';
+                btn.classList.remove('loading');
+                btn.innerHTML = originalText;
             });
         });
 
