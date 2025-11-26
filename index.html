@@ -182,6 +182,12 @@
             border-color: var(--accent-primary);
         }
         .link-card i { margin-right: 15px; color: var(--accent-primary); width: 20px; text-align: center; }
+        
+        /* FIX: Asegurar que el texto del enlace ocupe el espacio y no se aplaste */
+        .link-card span {
+            flex: 1; /* Ocupa el espacio restante */
+            text-align: left; /* Alineación natural */
+        }
 
         /* Quiz */
         .andi-quiz-term strong {
@@ -303,7 +309,7 @@
             align-items: center;
             justify-content: center;
             transition: all 0.2s ease;
-            z-index: 1000;
+            z-index: 9999; /* Z-index altísimo para flotar sobre todo */
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             border: 2px solid var(--bg-deep);
         }
@@ -334,7 +340,7 @@
             transform-origin: bottom right;
             transition: all 0.1s ease;
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            z-index: 1001;
+            z-index: 9999; /* Z-index altísimo */
             display: flex;
             flex-direction: column;
         }
@@ -453,7 +459,25 @@
         .chatbox p ul { padding-left: 20px; margin: 5px 0; display: block; }
         .chatbox p li { list-style: disc; margin-bottom: 5px; }
 
+        @media (max-width: 850px) {
+            /* RESTAURADO: Layout original Grid para evitar descuadres */
+            .main-wrapper { 
+                grid-template-columns: 1fr;
+                gap: 30px; 
+                padding: 20px 15px;
+            }
+            .sidebar { position: relative; top: 0; padding: 20px; }
+            #map-container { height: 400px; }
+            
+            /* MANTENIDO: Reducción de padding para que el texto no se aplaste */
+            .clean-card { padding: 15px; }
+            
+            .custom-tooltip.wide { width: 300px; } 
+            .custom-tooltip.wide .tooltip-gallery { grid-template-columns: 1fr; }
+        }
+
         @media (max-width: 490px) {
+            /* Chatbot a pantalla completa en móviles muy pequeños para usabilidad */
             .chatbot-container {
                 right: 0;
                 bottom: 0;
@@ -503,29 +527,6 @@
         </aside>
 
         <main class="content-area">
-            <!-- CHATBOT BUTTON & MODAL -->
-            <button class="chatbot-toggler">
-                <span class="fa-solid fa-robot"></span>
-                <span class="fa-solid fa-xmark"></span>
-            </button>
-            <div class="chatbot-container">
-                <header class="chatbot-header">
-                    <h2>Legal AI Assistant</h2>
-                    <p>Powered by Gemini AI</p>
-                    <span class="close-btn fa-solid fa-xmark"></span>
-                </header>
-                <ul class="chatbox">
-                    <li class="chat incoming">
-                        <span class="fa-solid fa-robot"></span>
-                        <p>¡Hola! Soy el asistente virtual de Andrei. ¿Tienes alguna duda sobre Derecho, los trabajos publicados o la web? ⚖️</p>
-                    </li>
-                </ul>
-                <div class="chat-input">
-                    <textarea placeholder="Escribe tu pregunta..." required></textarea>
-                    <span id="send-btn" class="fa-solid fa-paper-plane"></span>
-                </div>
-            </div>
-
             <section id="mis-informes" class="clean-card">
                 <div class="section-header">
                     <i class="fa-solid fa-book-open"></i>
@@ -633,6 +634,29 @@
                 <p id="footer-contact">Contacto: andreidimaavram@gmail.com</p>
             </footer>
         </main>
+    </div>
+
+    <!-- CHATBOT HTML (MOVIDO AL FINAL DEL BODY PARA FLOTAR CORRECTAMENTE) -->
+    <button class="chatbot-toggler">
+        <span class="fa-solid fa-robot"></span>
+        <span class="fa-solid fa-xmark"></span>
+    </button>
+    <div class="chatbot-container">
+        <header class="chatbot-header">
+            <h2>Legal AI Assistant</h2>
+            <p>Powered by Gemini AI</p>
+            <span class="close-btn fa-solid fa-xmark"></span>
+        </header>
+        <ul class="chatbox">
+            <li class="chat incoming">
+                <span class="fa-solid fa-robot"></span>
+                <p>¡Hola! Soy el asistente virtual de Andrei. ¿Tienes alguna duda sobre Derecho, los trabajos publicados o la web? ⚖️</p>
+            </li>
+        </ul>
+        <div class="chat-input">
+            <textarea placeholder="Escribe tu pregunta..." required></textarea>
+            <span id="send-btn" class="fa-solid fa-paper-plane"></span>
+        </div>
     </div>
 
     <script>
@@ -1139,9 +1163,9 @@
                         body: JSON.stringify({
                             contents: [{
                                 parts: [{ 
-                                    text: `Eres AndreiBot, asistente legal experto.
+                                    text: `Eres AndreiBot, asistente legal experto basado en Gemini.
                                     Responde dudas sobre derecho español/europeo de forma concisa. 
-                                    SIEMPRE incluye: "No soy abogado, esto es información académica".
+                                    Incluye a veces: "No soy abogado, esto es información académica".
                                     Pregunta: ${userMessage}` 
                                 }]
                             }]
