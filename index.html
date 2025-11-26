@@ -183,10 +183,9 @@
         }
         .link-card i { margin-right: 15px; color: var(--accent-primary); width: 20px; text-align: center; }
         
-        /* FIX: Asegurar que el texto del enlace ocupe el espacio y no se aplaste */
         .link-card span {
-            flex: 1; /* Ocupa el espacio restante */
-            text-align: left; /* Alineación natural */
+            flex: 1; 
+            text-align: left; 
         }
 
         /* Quiz */
@@ -226,19 +225,23 @@
         .map-content.expanded { max-height: 600px; opacity: 1; margin-top: 20px; }
         #map-container { height: 500px; width: 100%; border-radius: 8px; background: var(--bg-element); transition: background-color 0.3s ease;}
 
-        /* --- ESTILOS TOOLTIP --- */
+        /* --- ESTILOS TOOLTIP MAPA MEJORADOS --- */
         .custom-tooltip {
             padding: 12px;
             text-align: center; color: #333;
             width: 300px; 
+            max-width: 90vw; 
             transition: width 0.3s ease;
+            box-sizing: border-box;
         }
-        .custom-tooltip.wide { width: 480px; }
+        .custom-tooltip.wide { width: 480px; max-width: 90vw; }
+        
         .tooltip-gallery {
             display: grid;
             grid-template-columns: 1fr; gap: 6px; margin-bottom: 8px;
         }
         .custom-tooltip.wide .tooltip-gallery { grid-template-columns: 1fr 1fr; }
+        
         .tooltip-gallery img {
             width: 100%;
             height: 180px; 
@@ -309,7 +312,7 @@
             align-items: center;
             justify-content: center;
             transition: all 0.2s ease;
-            z-index: 9999; /* Z-index altísimo para flotar sobre todo */
+            z-index: 9999; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             border: 2px solid var(--bg-deep);
         }
@@ -340,7 +343,7 @@
             transform-origin: bottom right;
             transition: all 0.1s ease;
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            z-index: 9999; /* Z-index altísimo */
+            z-index: 9999; 
             display: flex;
             flex-direction: column;
         }
@@ -373,7 +376,7 @@
             transform: translateY(-50%);
             color: #fff;
             cursor: pointer;
-            display: none; /* Oculto en desktop, visible si quieres en mobile */
+            display: none; 
         }
         .chatbox {
             height: 400px;
@@ -417,7 +420,21 @@
             background: var(--bg-card);
             color: var(--text-main);
             border: 1px solid var(--border-color);
+            min-height: 40px;
         }
+        
+        /* --- ANIMACIÓN PENSANDO (RUEDECITA) --- */
+        .chat-spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid var(--text-muted);
+            border-top: 3px solid var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 8px 5px; /* Ajustado margen para alinear mejor */
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
         .chat-input {
             position: absolute;
             bottom: 0;
@@ -460,7 +477,6 @@
         .chatbox p li { list-style: disc; margin-bottom: 5px; }
 
         @media (max-width: 850px) {
-            /* RESTAURADO: Layout original Grid para evitar descuadres */
             .main-wrapper { 
                 grid-template-columns: 1fr;
                 gap: 30px; 
@@ -468,16 +484,14 @@
             }
             .sidebar { position: relative; top: 0; padding: 20px; }
             #map-container { height: 400px; }
-            
-            /* MANTENIDO: Reducción de padding para que el texto no se aplaste */
             .clean-card { padding: 15px; }
             
-            .custom-tooltip.wide { width: 300px; } 
+            /* Ajuste mapa mobile */
+            .custom-tooltip.wide { width: auto; max-width: 300px; } 
             .custom-tooltip.wide .tooltip-gallery { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 490px) {
-            /* Chatbot a pantalla completa en móviles muy pequeños para usabilidad */
             .chatbot-container {
                 right: 0;
                 bottom: 0;
@@ -490,6 +504,9 @@
             }
             .chatbot-header span { display: block; }
             .chatbot-toggler { right: 20px; bottom: 20px; }
+            
+            /* Forzar fotos mapa más pequeñas en móvil */
+            .tooltip-gallery img { height: 140px; }
         }
 
         @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
@@ -636,7 +653,7 @@
         </main>
     </div>
 
-    <!-- CHATBOT HTML (MOVIDO AL FINAL DEL BODY PARA FLOTAR CORRECTAMENTE) -->
+    <!-- CHATBOT HTML -->
     <button class="chatbot-toggler">
         <span class="fa-solid fa-robot"></span>
         <span class="fa-solid fa-xmark"></span>
@@ -700,6 +717,7 @@
                 'response-resources': 'Puede consultar estos recursos:', 
                 'disclaimer-title': 'Descargo de responsabilidad:', 
                 'disclaimer-text': 'La información proporcionada en este sitio es solo para fines académicos y no constituye asesoramiento legal. Consulte siempre con un abogado calificado para problemas legales específicos.', 
+                'footer-contact': 'Contacto: andreidimaavram@gmail.com',
                 'andi-quiz-title': 'Quiz Traducción Jurídica', 
                 'quiz-subtitle': 'Adivina la traducción correcta', 'quiz-reveal': 'Revelar', 'quiz-hide': 'Ocultar', 'quiz-next': 'Siguiente'
             },
@@ -723,6 +741,7 @@
                 'response-general': 'This service provides general guidance and does not replace professional advice.', 
                 'response-resources': 'You can consult these resources:', 
                 'disclaimer-title': 'Disclaimer:', 'disclaimer-text': 'The information provided on this site is for academic purposes only and does not constitute legal advice. Always consult with a qualified attorney for specific legal issues.', 
+                'footer-contact': 'Contact: andreidimaavram@gmail.com',
                 'andi-quiz-title': 'Legal Translation Quiz', 
                 'quiz-subtitle': 'Guess the correct translation', 'quiz-reveal': 'Reveal', 'quiz-hide': 'Hide', 'quiz-next': 'Next'
             }
@@ -1078,10 +1097,6 @@
             const chatInput = document.querySelector(".chat-input textarea");
             const sendChatBtn = document.querySelector(".chat-input span");
 
-            // --- ¡IMPORTANTE! SIGUE ESTOS PASOS ---
-            // 1. GENERA UNA CLAVE NUEVA EN https://aistudio.google.com/app/apikey
-            // 2. NO la pegues entera. Pégala por trozos aquí abajo:
-            
             const parteA = "AIzaSyByuV"; 
             const parteB = "4p_RLik-E6";
             const parteC = "5ZO9BaaZK9o41-28SHU";
@@ -1094,9 +1109,16 @@
             const createChatLi = (message, className) => {
                 const chatLi = document.createElement("li");
                 chatLi.classList.add("chat", className);
-                let chatContent = className === "outgoing" ? `<p></p>` : `<span class="fa-solid fa-robot"></span><p></p>`;
-                chatLi.innerHTML = chatContent;
-                chatLi.querySelector("p").textContent = message;
+                
+                // Si es un mensaje "temporal" de carga (tiene la clase 'loading-dots'), usamos HTML especial
+                if(message === "LOADING_ANIMATION") {
+                     let chatContent = `<span class="fa-solid fa-robot"></span><div class="chat-spinner"></div>`;
+                     chatLi.innerHTML = chatContent;
+                } else {
+                     let chatContent = className === "outgoing" ? `<p></p>` : `<span class="fa-solid fa-robot"></span><p></p>`;
+                     chatLi.innerHTML = chatContent;
+                     chatLi.querySelector("p").textContent = message;
+                }
                 return chatLi;
             }
 
@@ -1107,8 +1129,6 @@
                     .replace(/\n/g, '<br>');
             }
 
-            // --- FUNCIÓN DE AUTODETECCIÓN DE MODELO ---
-            // Le pregunta a Google qué modelos están disponibles para esta clave
             let autoDetectedModel = null;
 
             const detectBestModel = async () => {
@@ -1118,41 +1138,34 @@
                     const data = await response.json();
                     if (!response.ok) throw new Error(data.error?.message || "Error al listar modelos");
                     
-                    // Buscamos si existe 'gemini-1.5-flash' o 'gemini-pro' en la lista
                     const models = data.models || [];
                     const flash = models.find(m => m.name.includes("gemini-1.5-flash"));
                     const pro = models.find(m => m.name.includes("gemini-pro"));
                     const onePointZero = models.find(m => m.name.includes("gemini-1.0-pro"));
                     
-                    // Elegimos el mejor disponible
                     if (flash) return flash.name.replace("models/", "");
                     if (pro) return pro.name.replace("models/", "");
                     if (onePointZero) return onePointZero.name.replace("models/", "");
                     
-                    // Si no encontramos los conocidos, cogemos el primero que sirva para generar texto
                     const fallback = models.find(m => m.supportedGenerationMethods && m.supportedGenerationMethods.includes("generateContent"));
                     if (fallback) return fallback.name.replace("models/", "");
 
                     throw new Error("No se encontraron modelos compatibles con generateContent");
                 } catch (e) {
                     console.warn("Fallo en autodetección:", e);
-                    return null; // Si falla la detección, volveremos al método manual
+                    return null; 
                 }
             };
 
             const generateResponse = async (chatElement) => {
-                const messageElement = chatElement.querySelector("p");
-                messageElement.textContent = "...";
-
+                // AQUI ESTABA EL ERROR: BORRABA LA RUEDA ANTES DE EMPEZAR.
+                // AHORA NO HACEMOS NADA HASTA TENER LA RESPUESTA.
+                
                 try {
-                    // 1. Detectamos el modelo si aún no lo tenemos
                     if (!autoDetectedModel) {
-                         console.log("Detectando modelo óptimo...");
                          autoDetectedModel = await detectBestModel();
-                         console.log("Modelo detectado:", autoDetectedModel);
                     }
 
-                    // 2. Si la detección falló, intentamos los nombres estándar por defecto
                     const modelToUse = autoDetectedModel || "gemini-1.5-flash";
                     
                     const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${modelToUse}:generateContent?key=${GOOGLE_API_KEY}`;
@@ -1166,8 +1179,14 @@
                                     text: `Actúa como un Asistente Legal Virtual para la web profesional de Andrei Dima.
                                     No tienes nombre propio, eres simplemente "el asistente".
                                     Si te preguntan por Andrei, refiérete a él como "el autor de esta web" o "Andrei Dima", hablando en tercera persona.
+                                    
+                                    INSTRUCCIONES CLAVE DE IDIOMA:
+                                    1. Detecta automáticamente el idioma en el que el usuario ha escrito el mensaje ("${userMessage}").
+                                    2. RESPONDE EN EL MISMO IDIOMA que el usuario. Si escribe en Inglés, responde en Inglés. Si escribe en Español, responde en Español.
+                                    
                                     Responde dudas sobre derecho español/europeo de forma concisa basándote en la información académica.
-                                    SIEMPRE incluye al final: "No soy abogado, esto es información académica".
+                                    No incluyas descargos de responsabilidad legales repetitivos en cada respuesta, sé natural.
+                                    
                                     Pregunta del usuario: ${userMessage}` 
                                 }]
                             }]
@@ -1179,27 +1198,28 @@
                     
                     if (!response.ok) {
                         const errorMsg = data.error?.message || "Error desconocido";
-                        // Si falla con el modelo detectado, reseteamos para volver a detectar la próxima vez
                         autoDetectedModel = null; 
                         throw new Error(errorMsg);
                     }
                     
                     const apiResponse = data.candidates[0].content.parts[0].text;
-                    messageElement.innerHTML = formatResponse(apiResponse);
+                    const formattedText = formatResponse(apiResponse);
+                    
+                    // AHORA SI: REEMPLAZAMOS LA RUEDA POR EL TEXTO
+                    chatElement.innerHTML = `<span class="fa-solid fa-robot"></span><p>${formattedText}</p>`;
 
                 } catch (error) {
-                    messageElement.textContent = "Error de conexión. Verifica la clave API.";
-                    messageElement.style.color = "#fca5a5";
                     console.error("Fallo chatbot:", error);
+                    let errorText = "Error de conexión.";
                     
                     if (error.message.includes("API_KEY_INVALID")) {
-                         alert("⚠️ CLAVE INCORRECTA: La API Key no es válida. Revisa que la hayas copiado bien.");
+                         errorText = "⚠️ CLAVE INCORRECTA: La API Key no es válida.";
                     } else if (error.message.includes("not found")) {
-                        // Si incluso la detección falló o el modelo no existe
-                        alert("⚠️ MODELO NO ENCONTRADO: Parece que tu cuenta de Google no tiene acceso a los modelos estándar. Intenta crear una API Key en un proyecto nuevo de Google Cloud.");
-                    } else {
-                        alert(`⚠️ ERROR: ${error.message}`);
+                        errorText = "⚠️ MODELO NO ENCONTRADO.";
                     }
+                    
+                    chatElement.innerHTML = `<span class="fa-solid fa-robot"></span><p style="color:#fca5a5">${errorText}</p>`;
+
                 } finally {
                     chatbox.scrollTo(0, chatbox.scrollHeight);
                 }
@@ -1217,11 +1237,13 @@
                 chatInput.value = "";
                 chatInput.style.height = `${inputInitHeight}px`;
 
+                // Mensaje Usuario
                 chatbox.appendChild(createChatLi(userMessage, "outgoing"));
                 chatbox.scrollTo(0, chatbox.scrollHeight);
 
+                // Mensaje Robot (Cargando animación)
                 setTimeout(() => {
-                    const incomingChatLi = createChatLi("Escribiendo...", "incoming");
+                    const incomingChatLi = createChatLi("LOADING_ANIMATION", "incoming");
                     chatbox.appendChild(incomingChatLi);
                     chatbox.scrollTo(0, chatbox.scrollHeight);
                     generateResponse(incomingChatLi);
@@ -1242,7 +1264,6 @@
 
             sendChatBtn.addEventListener("click", handleChat);
             
-            // CORRECCIÓN BOTÓN CERRAR EN MÓVIL
             closeBtn.addEventListener("click", () => {
                 document.querySelector(".chatbot-container").classList.remove("show-chat");
                 chatbotToggler.classList.remove("show-chat");
