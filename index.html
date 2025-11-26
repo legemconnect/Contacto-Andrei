@@ -28,8 +28,11 @@
             --radius-sm: 12px;
             --font-main: 'Inter', sans-serif;
             --font-display: 'Space Grotesk', sans-serif;
-            --map-null: #334155;      /* Color países no visitados mapa */
-            --map-border: #1e293b;    /* Bordes mapa */
+            
+            /* Colores específicos del Mapa (Oscuro) */
+            --map-null: #334155;      
+            --map-border: #1e293b;
+            --map-hover: #38bdf8;
         }
 
         /* TEMA CLARO (OFFICE MODE) */
@@ -37,12 +40,15 @@
             --bg-deep: #f8fafc;       /* Blanco grisáceo */
             --bg-card: #ffffff;       /* Blanco puro */
             --bg-element: #f1f5f9;    /* Gris muy claro */
-            --accent-primary: #0ea5e9; /* Azul un poco más oscuro para contraste */
-            --text-main: #1e293b;     /* Texto oscuro (casi negro) */
+            --accent-primary: #0ea5e9; /* Azul más sólido */
+            --text-main: #1e293b;     /* Texto oscuro */
             --text-muted: #64748b;    /* Gris medio */
-            --border-color: #e2e8f0;  /* Bordes suaves */
-            --map-null: #e2e8f0;      /* Mapa claro */
-            --map-border: #cbd5e1;
+            --border-color: #cbd5e1;  /* Bordes suaves */
+            
+            /* Colores específicos del Mapa (Claro) */
+            --map-null: #e2e8f0;      
+            --map-border: #94a3b8;
+            --map-hover: #0ea5e9;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -54,7 +60,7 @@
             line-height: 1.6;
             min-height: 100vh;
             overflow-x: hidden;
-            transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave de tema */
+            transition: background-color 0.3s ease, color 0.3s ease;
             opacity: 1;
         }
 
@@ -83,7 +89,7 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra más suave */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             z-index: 10;
             transition: background-color 0.3s ease, border-color 0.3s ease;
         }
@@ -109,7 +115,7 @@
 
         .sidebar h3 {
             font-family: var(--font-display);
-            font-size: 1.6rem; margin-bottom: 5px; color: var(--text-main); /* Adaptable */
+            font-size: 1.6rem; margin-bottom: 5px; color: var(--text-main);
         }
 
         .tagline {
@@ -155,7 +161,7 @@
             display: flex;
             align-items: center; padding: 15px;
             background-color: var(--bg-element); 
-            border: 1px solid var(--border-color); /* Añadido borde sutil */
+            border: 1px solid var(--border-color);
             border-radius: 8px;
             text-decoration: none; color: var(--text-main);
             transition: all 0.2s; font-weight: 500;
@@ -175,7 +181,7 @@
             transition: color 0.3s;
         }
         .andi-quiz-answer {
-            background: #064e3b; /* Mantener verde oscuro para contraste del texto */
+            background: #064e3b;
             color: #6ee7b7; padding: 10px;
             border-radius: 8px; margin: 20px 0; display: none; font-weight: bold;
         }
@@ -207,7 +213,7 @@
         /* --- ESTILOS TOOLTIP --- */
         .custom-tooltip {
             padding: 12px;
-            text-align: center; color: #333; /* Texto siempre oscuro dentro del tooltip blanco */
+            text-align: center; color: #333;
             width: 300px; 
             transition: width 0.3s ease;
         }
@@ -229,7 +235,7 @@
         input, textarea {
             width: 100%;
             padding: 12px; margin-top: 5px;
-            background: var(--bg-deep); /* Input se adapta al fondo */
+            background: var(--bg-deep);
             border: 1px solid var(--border-color);
             border-radius: 6px; color: var(--text-main); font-family: inherit;
             transition: border-color 0.2s;
@@ -248,7 +254,7 @@
             color: var(--bg-deep); cursor: not-allowed;
         }
 
-        /* CONTROLES (IDIOMA Y TEMA) */
+        /* CONTROLES */
         .controls-wrapper {
             margin-bottom: 20px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
         }
@@ -262,7 +268,6 @@
         .control-btn:hover { border-color: var(--text-muted); color: var(--text-main); }
         .control-btn.active { background: var(--accent-primary); color: #fff; border-color: var(--accent-primary); font-weight: bold; }
         
-        /* Botón de tema específico */
         #theme-toggle i { font-size: 1rem; }
 
         footer { margin-top: 50px; text-align: center; font-size: 0.8rem; color: var(--text-muted); padding-bottom: 20px;}
@@ -427,21 +432,21 @@
     </div>
 
     <script>
-        /* ================= DATOS MAPA ================= */
+        /* ================= DATOS MAPA (TEXTOS ACTUALIZADOS) ================= */
         const visitedCountriesData = [
             { code: 'es', name: {es: 'España', en: 'Spain'}, text: {es: 'Mi hogar y base de mi educación.', en: 'My home and the base of my education.'}, imgs: ['img/paises/espana_1.jpg','img/paises/espana_2.jpg','img/paises/espana_3.jpg','img/paises/espana_4.jpg'] },
-            { code: 'fr', name: {es: 'Francia', en: 'France'}, text: {es: 'Viaje a Francia.', en: 'Trip to France.'}, imgs: ['img/paises/francia_1.jpg'] },
-            { code: 'ie', name: {es: 'Irlanda', en: 'Ireland'}, text: {es: 'Experiencia en Irlanda.', en: 'Experience in Ireland.'}, imgs: ['img/paises/irlanda_1.jpg','img/paises/irlanda_2.jpg','img/paises/irlanda_3.jpg'] },
-            { code: 'ch', name: {es: 'Suiza', en: 'Switzerland'}, text: {es: 'Alpes suizos.', en: 'Swiss Alps.'}, imgs: ['img/paises/suiza_1.jpg'] },
-            { code: 'it', name: {es: 'Italia', en: 'Italy'}, text: {es: 'Bella Italia.', en: 'Beautiful Italy.'}, imgs: ['img/paises/italia_1.jpg'] },
-            { code: 'de', name: {es: 'Alemania', en: 'Germany'}, text: {es: 'Alemania.', en: 'Germany.'}, imgs: ['img/paises/alemania_1.jpg'] },
-            { code: 'at', name: {es: 'Austria', en: 'Austria'}, text: {es: 'Austria imperial.', en: 'Imperial Austria.'}, imgs: ['img/paises/austria_1.jpg','img/paises/austria_2.jpg'] },
+            { code: 'fr', name: {es: 'Francia', en: 'France'}, text: {es: 'Viaje a Francia, Lyon y Marsella.', en: 'Trip to France, Lyon and Marseille.'}, imgs: ['img/paises/francia_1.jpg'] },
+            { code: 'ie', name: {es: 'Irlanda', en: 'Ireland'}, text: {es: 'Experiencia inolvidable en Dublín.', en: 'Unforgettable experience in Dublin.'}, imgs: ['img/paises/irlanda_1.jpg','img/paises/irlanda_2.jpg','img/paises/irlanda_3.jpg'] },
+            { code: 'ch', name: {es: 'Suiza', en: 'Switzerland'}, text: {es: 'El país de la diplomacia internacional.', en: 'The country of international diplomacy.'}, imgs: ['img/paises/suiza_1.jpg'] },
+            { code: 'it', name: {es: 'Italia', en: 'Italy'}, text: {es: 'Arte, historia y gastronomía inigualable.', en: 'Art, history, and unrivaled cuisine.'}, imgs: ['img/paises/italia_1.jpg'] },
+            { code: 'de', name: {es: 'Alemania', en: 'Germany'}, text: {es: 'Corazón de Europa: Historia y Modernidad.', en: 'Heart of Europe: History and Modernity.'}, imgs: ['img/paises/alemania_1.jpg'] },
+            { code: 'at', name: {es: 'Austria', en: 'Austria'}, text: {es: 'Viena: Arte, música y palacios imperiales.', en: 'Vienna: Art, music, and imperial palaces.'}, imgs: ['img/paises/austria_1.jpg','img/paises/austria_2.jpg'] },
             { code: 'cz', name: {es: 'Rep. Checa', en: 'Czech Rep.'}, text: {es: 'Brno: mi segunda casa.', en: 'Brno: my second home.'}, imgs: ['img/paises/chequia_1.jpg','img/paises/chequia_2.jpg','img/paises/chequia_3.jpg','img/paises/chequia_4.jpg'] },
-            { code: 'si', name: {es: 'Eslovenia', en: 'Slovenia'}, text: {es: 'Naturaleza eslovena.', en: 'Slovenian nature.'}, imgs: ['img/paises/eslovenia_1.jpg'] },
-            { code: 'hu', name: {es: 'Hungría', en: 'Hungary'}, text: {es: 'Budapest.', en: 'Budapest.'}, imgs: ['img/paises/hungria_1.jpg'] },
+            { code: 'si', name: {es: 'Eslovenia', en: 'Slovenia'}, text: {es: 'Joyas ocultas y naturaleza verde.', en: 'Hidden gems and green nature.'}, imgs: ['img/paises/eslovenia_1.jpg'] },
+            { code: 'hu', name: {es: 'Hungría', en: 'Hungary'}, text: {es: 'Budapest: La perla del Danubio.', en: 'Budapest: Pearl of the Danube.'}, imgs: ['img/paises/hungria_1.jpg'] },
             { code: 'ro', name: {es: 'Rumanía', en: 'Romania'}, text: {es: 'Mis raíces y familia.', en: 'My roots and family.'}, imgs: ['img/paises/rumania_1.jpg'] },
-            { code: 'ad', name: {es: 'Andorra', en: 'Andorra'}, text: {es: 'Andorra', en: 'Andorra'}, imgs: [] },
-            { code: 'mc', name: {es: 'Mónaco', en: 'Monaco'}, text: {es: 'Mónaco', en: 'Monaco'}, imgs: [] }
+            { code: 'ad', name: {es: 'Andorra', en: 'Andorra'}, text: {es: 'Nieve, montañas y paisajes únicos.', en: 'Snow, mountains, and unique landscapes.'}, imgs: [] },
+            { code: 'mc', name: {es: 'Mónaco', en: 'Monaco'}, text: {es: 'Lujo y belleza en la Costa Azul.', en: 'Luxury and beauty on the French Riviera.'}, imgs: [] }
         ];
 
         /* ================= TRADUCCIONES ================= */
@@ -549,278 +554,309 @@
             { es:{q:'Soborno', a:'Bribery'}, en:{q:'Bribery', a:'Soborno'} }
         ];
 
-        let currentLanguage = localStorage.getItem('preferredLanguage') || 'es';
-        
-        // --- LOGICA DE TEMA CLARO/OSCURO ---
-        let currentTheme = localStorage.getItem('preferredTheme') || 'dark';
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        const themeIcon = themeToggleBtn.querySelector('i');
-
-        function applyTheme(theme) {
-            if (theme === 'light') {
-                document.body.classList.add('light-mode');
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
-            } else {
-                document.body.classList.remove('light-mode');
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
-            }
-            // Actualizar mapa si está visible
-            if(mapChart) {
-                // Pequeño delay para dejar que CSS aplique colores
-                setTimeout(() => {
-                    initMap(); 
-                    // No volvemos a lanzar la animación para no marear
-                    if (document.getElementById('mapContent').classList.contains('expanded')) {
-                        // Solo redibujar
-                        const data = mapChart.series[0].data;
-                        mapChart.redraw();
-                    }
-                }, 100);
-            }
-        }
-
-        themeToggleBtn.addEventListener('click', () => {
-            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            localStorage.setItem('preferredTheme', currentTheme);
-            applyTheme(currentTheme);
-        });
-
-        // Aplicar al inicio
-        applyTheme(currentTheme);
-        // -----------------------------------
-
-        let currentQuizIndex = 0;
-
-        function setLanguage(lang) {
-            document.body.classList.add('fading');
-            setTimeout(() => {
-                currentLanguage = lang;
-                localStorage.setItem('preferredLanguage', lang);
-                document.documentElement.lang = lang;
-                Object.keys(translations[lang]).forEach(key => {
-                    const element = document.getElementById(key);
-                    if (element) {
-                        if(key.includes('link')) element.setAttribute('title', translations[lang][key]);
-                        else if(element.tagName === 'INPUT') element.placeholder = translations[lang]['label-jurisdiction'].replace(':', '');
-                        else element.textContent = translations[lang][key];
-                    }
-                });
-                const jurisdictionInput = document.getElementById('jurisdiction');
-                if(jurisdictionInput) {
-                    jurisdictionInput.placeholder = lang === 'es' ? 'Ej: Madrid, España' : 'E.g: Madrid, Spain';
+        /* ================= LOGICA PRINCIPAL ================= */
+        // Esperamos a que el DOM esté listo para evitar errores de "null"
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // 1. FIX DE SEGURIDAD HIGHCHARTS (Aseguramos que existe objeto)
+            try {
+                if (typeof Highcharts !== 'undefined' && Highcharts.AST) {
+                    if (Highcharts.AST.allowedTags.indexOf('img') === -1) Highcharts.AST.allowedTags.push('img');
+                    if (Highcharts.AST.allowedAttributes.indexOf('src') === -1) Highcharts.AST.allowedAttributes.push('src');
+                    console.log("✅ Highcharts Configurado");
                 }
+                if (typeof Highcharts !== 'undefined') {
+                    Highcharts.setOptions({ accessibility: { enabled: false } });
+                }
+            } catch (e) { console.error("Error Highcharts Config:", e); }
 
-                const mapContent = document.getElementById('mapContent');
-                const mapToggleText = document.getElementById('map-toggle-text');
-                if (mapContent.classList.contains('expanded')) {
-                    mapToggleText.textContent = translations[lang]['map-hide'];
+            // 2. VARIABLES GLOBALES
+            let currentLanguage = localStorage.getItem('preferredLanguage') || 'es';
+            let currentTheme = localStorage.getItem('preferredTheme') || 'dark';
+            let currentQuizIndex = 0;
+            let mapChart = null;
+            let animTimeouts = [];
+
+            // 3. REFERENCIAS DOM (Ahora es seguro llamarlas)
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const themeIcon = themeToggleBtn ? themeToggleBtn.querySelector('i') : null;
+            const quizTermEl = document.getElementById('andi-quiz-term-text');
+            const quizAnswerEl = document.getElementById('andi-quiz-answer');
+            const quizRevealBtn = document.getElementById('andi-btn-reveal');
+            const quizNextBtn = document.getElementById('andi-btn-next');
+            const mapToggle = document.getElementById('mapToggle');
+            const mapContent = document.getElementById('mapContent');
+
+            // 4. FUNCIONES
+            function applyTheme(theme) {
+                if (theme === 'light') {
+                    document.body.classList.add('light-mode');
+                    if(themeIcon) { themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun'); }
                 } else {
-                    mapToggleText.textContent = translations[lang]['map-show'];
+                    document.body.classList.remove('light-mode');
+                    if(themeIcon) { themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon'); }
                 }
-                document.querySelectorAll('.lang-btn').forEach(btn => {
-                    btn.classList.toggle('active', btn.dataset.lang === lang);
-                });
-                renderQuizCard();
+                // Si el mapa ya existe, actualizamos sus colores
                 if(mapChart) {
-                    mapChart.series[0].update({ name: currentLanguage === 'es' ? 'Viajes' : 'Travels' });
-                    initMap();
+                    setTimeout(() => {
+                        const style = getComputedStyle(document.documentElement);
+                        const newBorder = style.getPropertyValue('--map-border').trim();
+                        const newNull = style.getPropertyValue('--map-null').trim();
+                        
+                        mapChart.update({
+                            series: [{
+                                borderColor: newBorder,
+                                nullColor: newNull
+                            }]
+                        });
+                    }, 50); // Pequeño delay para asegurar que CSS cambió
                 }
-                document.body.classList.remove('fading');
-            }, 200);
-        }
-
-        document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.lang)));
-
-        const quizTermEl = document.getElementById('andi-quiz-term-text');
-        const quizAnswerEl = document.getElementById('andi-quiz-answer');
-        const quizRevealBtn = document.getElementById('andi-btn-reveal');
-        const quizNextBtn = document.getElementById('andi-btn-next');
-
-        function renderQuizCard() {
-            const card = flashcards[currentQuizIndex];
-            if (!card) return;
-            const data = card[currentLanguage];
-            quizTermEl.textContent = data.q;
-            quizAnswerEl.textContent = data.a;
-            quizAnswerEl.classList.remove('visible');
-            quizRevealBtn.textContent = translations[currentLanguage]['quiz-reveal'];
-        }
-
-        quizRevealBtn.addEventListener('click', () => {
-            const isVisible = quizAnswerEl.classList.contains('visible');
-            if (isVisible) {
-                quizAnswerEl.classList.remove('visible');
-                quizRevealBtn.textContent = translations[currentLanguage]['quiz-reveal'];
-            } else {
-                quizAnswerEl.classList.add('visible');
-                quizRevealBtn.textContent = translations[currentLanguage]['quiz-hide'];
             }
-        });
 
-        quizNextBtn.addEventListener('click', () => {
-            currentQuizIndex = (currentQuizIndex + 1) % flashcards.length;
+            function renderQuizCard() {
+                const card = flashcards[currentQuizIndex];
+                if (!card) return;
+                const data = card[currentLanguage];
+                if(quizTermEl) quizTermEl.textContent = data.q;
+                if(quizAnswerEl) {
+                    quizAnswerEl.textContent = data.a;
+                    quizAnswerEl.classList.remove('visible');
+                }
+                if(quizRevealBtn) quizRevealBtn.textContent = translations[currentLanguage]['quiz-reveal'];
+            }
+
+            function setLanguage(lang) {
+                document.body.classList.add('fading');
+                setTimeout(() => {
+                    currentLanguage = lang;
+                    localStorage.setItem('preferredLanguage', lang);
+                    document.documentElement.lang = lang;
+                    
+                    // Actualizar textos
+                    Object.keys(translations[lang]).forEach(key => {
+                        const element = document.getElementById(key);
+                        if (element) {
+                            if(key.includes('link')) element.setAttribute('title', translations[lang][key]);
+                            else if(element.tagName === 'INPUT') element.placeholder = translations[lang]['label-jurisdiction'].replace(':', '');
+                            else element.textContent = translations[lang][key];
+                        }
+                    });
+
+                    // Placeholders especiales
+                    const jurisdictionInput = document.getElementById('jurisdiction');
+                    if(jurisdictionInput) {
+                        jurisdictionInput.placeholder = lang === 'es' ? 'Ej: Madrid, España' : 'E.g: Madrid, Spain';
+                    }
+
+                    // Botones idioma
+                    document.querySelectorAll('.lang-btn').forEach(btn => {
+                        btn.classList.toggle('active', btn.dataset.lang === lang);
+                    });
+
+                    // Texto botón mapa
+                    const mapToggleText = document.getElementById('map-toggle-text');
+                    if(mapContent && mapContent.classList.contains('expanded')) {
+                        if(mapToggleText) mapToggleText.textContent = translations[lang]['map-hide'];
+                    } else {
+                        if(mapToggleText) mapToggleText.textContent = translations[lang]['map-show'];
+                    }
+
+                    renderQuizCard();
+                    
+                    // Actualizar mapa si existe
+                    if(mapChart) {
+                        mapChart.series[0].update({ name: currentLanguage === 'es' ? 'Viajes' : 'Travels' });
+                        // Re-inicializamos para cargar nuevos textos de tooltips
+                        initMap();
+                    }
+
+                    document.body.classList.remove('fading');
+                }, 200);
+            }
+
+            function initMap() {
+                if (typeof Highcharts === 'undefined') return;
+                if (mapChart) mapChart.destroy();
+                
+                const repoBaseUrl = 'https://legemconnect.github.io/Contacto-Andrei/';
+                const style = getComputedStyle(document.documentElement);
+                const borderColor = style.getPropertyValue('--map-border').trim() || '#1e293b';
+                const nullColor = style.getPropertyValue('--map-null').trim() || '#334155';
+
+                mapChart = Highcharts.mapChart('map-container', {
+                    chart: { map: 'custom/europe', backgroundColor: 'transparent', animation: false },
+                    title: { text: '' },
+                    mapNavigation: { enabled: false },
+                    exporting: { enabled: false },
+                    legend: { enabled: false },
+                    credits: { enabled: false },
+                    tooltip: { 
+                        useHTML: true,
+                        backgroundColor: 'rgba(255,255,255,0.95)',
+                        borderRadius: 8,
+                        borderWidth: 0,
+                        shadow: true,
+                        padding: 0,
+                        headerFormat: '',
+                        formatter: function () {
+                            const point = this.point;
+                            const images = point.customImgs || [];
+                            const lang = currentLanguage;
+                            const isWideClass = images.length > 1 ? 'wide' : '';
+                            let imagesHtml = '';
+                            
+                            if (images.length > 0) {
+                                imagesHtml = '<div class="tooltip-gallery">';
+                                images.forEach(img => { 
+                                    let finalSrc = img;
+                                    if (!img.startsWith('http')) {
+                                        finalSrc = repoBaseUrl + img;
+                                    }
+                                    imagesHtml += `<img src="${finalSrc}" alt="Foto viaje" style="display:block;">`; 
+                                });
+                                imagesHtml += '</div>';
+                            }
+                            
+                            const name = point.customName[lang];
+                            const text = point.customText[lang];
+                            return `
+                            <div class="custom-tooltip ${isWideClass}">
+                                ${imagesHtml}
+                                <h4 style="margin: 8px 0 5px 0; color:#2874A6; font-size:1.25em;">${name}</h4>
+                                <p style="font-size:0.9em; margin:0; line-height:1.4;">${text || ''}</p>
+                            </div>`;
+                        }
+                    },
+                    series: [{
+                        data: [],
+                        name: currentLanguage === 'es' ? 'Viajes' : 'Travels',
+                        joinBy: 'hc-key',
+                        borderColor: borderColor, 
+                        borderWidth: 1,
+                        nullColor: nullColor, 
+                        states: { hover: { color: getComputedStyle(document.documentElement).getPropertyValue('--map-hover').trim() || '#38bdf8' } }
+                    }]
+                });
+            }
+
+            function playMapAnimation() {
+                animTimeouts.forEach(t => clearTimeout(t));
+                animTimeouts = [];
+                let currentData = [];
+                const hoverColor = getComputedStyle(document.documentElement).getPropertyValue('--map-hover').trim() || '#38bdf8';
+                
+                visitedCountriesData.forEach((country, i) => {
+                    const t = setTimeout(() => {
+                        currentData.push({ 
+                            'hc-key': country.code, 
+                            value: 1, 
+                            color: hoverColor, 
+                            customName: country.name,
+                            customText: country.text,
+                            customImgs: country.imgs 
+                        });
+                        if(mapChart) {
+                            mapChart.series[0].setData([...currentData], false);
+                            mapChart.redraw(false);
+                        }
+                    }, i * 400); 
+                    animTimeouts.push(t);
+                });
+            }
+
+            // 5. EVENT LISTENERS
+            if(themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', () => {
+                    currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                    localStorage.setItem('preferredTheme', currentTheme);
+                    applyTheme(currentTheme);
+                });
+            }
+
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', () => setLanguage(btn.dataset.lang)));
+
+            if(quizRevealBtn) {
+                quizRevealBtn.addEventListener('click', () => {
+                    if(!quizAnswerEl) return;
+                    const isVisible = quizAnswerEl.classList.contains('visible');
+                    if (isVisible) {
+                        quizAnswerEl.classList.remove('visible');
+                        quizRevealBtn.textContent = translations[currentLanguage]['quiz-reveal'];
+                    } else {
+                        quizAnswerEl.classList.add('visible');
+                        quizRevealBtn.textContent = translations[currentLanguage]['quiz-hide'];
+                    }
+                });
+            }
+
+            if(quizNextBtn) {
+                quizNextBtn.addEventListener('click', () => {
+                    currentQuizIndex = (currentQuizIndex + 1) % flashcards.length;
+                    renderQuizCard();
+                });
+            }
+
+            if(mapToggle) {
+                mapToggle.addEventListener('click', function() {
+                    mapContent.classList.toggle('expanded');
+                    const icon = this.querySelector('i');
+                    const mapToggleText = document.getElementById('map-toggle-text');
+                    
+                    if (mapContent.classList.contains('expanded')) {
+                        if(mapToggleText) mapToggleText.textContent = translations[currentLanguage]['map-hide'];
+                        if(icon) icon.style.transform = 'rotate(180deg)';
+                        setTimeout(() => { initMap(); playMapAnimation(); }, 300);
+                    } else {
+                        if(mapToggleText) mapToggleText.textContent = translations[currentLanguage]['map-show'];
+                        if(icon) icon.style.transform = 'rotate(0deg)';
+                        animTimeouts.forEach(t => clearTimeout(t));
+                    }
+                });
+            }
+            
+            // EmailJS init
+            (function(){ emailjs.init('hz9CzCgK-LggHycqt'); })();
+            
+            const legalForm = document.getElementById('legal-form');
+            if(legalForm) {
+                legalForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const btn = document.getElementById('btn-submit');
+                    const originalText = btn.textContent;
+                    btn.classList.add('loading');
+                    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Enviando...';
+                    document.getElementById('confirmation').style.display = 'none';
+                    document.getElementById('error').style.display = 'none';
+                    
+                    emailjs.sendForm('LegemConnect', 'template_m5tlbo5', this).then(function() {
+                        document.getElementById('confirmation').style.display = 'block';
+                        legalForm.reset();
+                        btn.classList.remove('loading');
+                        btn.innerHTML = originalText;
+                        const lang = currentLanguage;
+                        const responseDiv = document.getElementById('response');
+                        responseDiv.innerHTML = `
+                            <p><strong>${translations[lang]['response-thanks']}</strong></p>
+                            <p>${translations[lang]['response-general']}</p>
+                            <p>${translations[lang]['response-resources']}</p>
+                            <ul style="text-align: left; margin-top: 5px;">
+                                <li><a href='http://www.abogacia.es/servicios/' target='_blank' style="color:var(--accent-primary)">Abogacía Española</a></li>
+                                <li><a href='https://justiciaoberta.gva.es/es/necessite-un-advocat-i-no-m-ho-puc-pagar/' target='_blank' style="color:var(--accent-primary)">Justicia Gratuita</a></li>
+                            </ul>`;
+                        responseDiv.style.display = 'block';
+                    }, function(error) {
+                        document.getElementById('error').style.display = 'block';
+                        btn.classList.remove('loading');
+                        btn.innerHTML = originalText;
+                    });
+                });
+            }
+
+            // 6. INICIALIZACIÓN FINAL
+            applyTheme(currentTheme);
+            setLanguage(currentLanguage);
             renderQuizCard();
         });
-
-        /* ==================== FIX DE SEGURIDAD ==================== */
-        try {
-            if (Highcharts && Highcharts.AST) {
-                if (Highcharts.AST.allowedTags.indexOf('img') === -1) Highcharts.AST.allowedTags.push('img');
-                if (Highcharts.AST.allowedAttributes.indexOf('src') === -1) Highcharts.AST.allowedAttributes.push('src');
-                console.log("✅ Seguridad de Highcharts ajustada: Imágenes permitidas.");
-            }
-            Highcharts.setOptions({ accessibility: { enabled: false } });
-        } catch (e) { console.error("Error ajustando Highcharts:", e); }
-        /* ========================================================== */
-
-        let mapChart = null;
-        let animTimeouts = [];
-
-        function initMap() {
-            if (mapChart) mapChart.destroy();
-            
-            // --- NUEVO: DEFINIR LA URL BASE ABSOLUTA ---
-            const repoBaseUrl = 'https://legemconnect.github.io/Contacto-Andrei/';
-            // -------------------------------------------
-
-            // Detectar colores según el tema actual (usando CSS variables computadas)
-            const style = getComputedStyle(document.body);
-            const borderColor = style.getPropertyValue('--map-border').trim();
-            const nullColor = style.getPropertyValue('--map-null').trim();
-
-            mapChart = Highcharts.mapChart('map-container', {
-                chart: { map: 'custom/europe', backgroundColor: 'transparent', animation: false },
-                title: { text: '' },
-                mapNavigation: { enabled: false },
-                exporting: { enabled: false },
-                legend: { enabled: false },
-                credits: { enabled: false },
-                tooltip: { 
-                    useHTML: true,
-                    backgroundColor: 'rgba(255,255,255,0.95)',
-                    borderRadius: 8,
-                    borderWidth: 0,
-                    shadow: true,
-                    padding: 0,
-                    headerFormat: '',
-                    formatter: function () {
-                        const point = this.point;
-                        const images = point.customImgs || [];
-                        const lang = currentLanguage;
-                        const isWideClass = images.length > 1 ? 'wide' : '';
-                        let imagesHtml = '';
-                        
-                        // --- AQUÍ ESTÁ EL ARREGLO DE LA RUTA ---
-                        if (images.length > 0) {
-                            imagesHtml = '<div class="tooltip-gallery">';
-                            images.forEach(img => { 
-                                let finalSrc = img;
-                                if (!img.startsWith('http')) {
-                                    finalSrc = repoBaseUrl + img;
-                                }
-                                imagesHtml += `<img src="${finalSrc}" alt="Foto viaje" style="display:block;">`; 
-                            });
-                            imagesHtml += '</div>';
-                        }
-                        // ---------------------------------------
-
-                        const name = point.customName[lang];
-                        const text = point.customText[lang];
-                        return `
-                        <div class="custom-tooltip ${isWideClass}">
-                            ${imagesHtml}
-                            <h4 style="margin: 8px 0 5px 0; color:#2874A6; font-size:1.25em;">${name}</h4>
-                            <p style="font-size:0.9em; margin:0; line-height:1.4;">${text || ''}</p>
-                        </div>`;
-                    }
-                },
-                series: [{
-                    data: [],
-                    name: currentLanguage === 'es' ? 'Viajes' : 'Travels',
-                    joinBy: 'hc-key',
-                    borderColor: borderColor, 
-                    borderWidth: 1,
-                    nullColor: nullColor, 
-                    states: { hover: { color: '#38bdf8' } }
-                }]
-            });
-        }
-
-        function playMapAnimation() {
-            animTimeouts.forEach(t => clearTimeout(t));
-            animTimeouts = [];
-            let currentData = [];
-            visitedCountriesData.forEach((country, i) => {
-                const t = setTimeout(() => {
-                    currentData.push({ 
-                        'hc-key': country.code, 
-                        value: 1, 
-                        color: '#38bdf8', 
-                        customName: country.name,
-                        customText: country.text,
-                        customImgs: country.imgs 
-                    });
-                    mapChart.series[0].setData([...currentData], false);
-                    mapChart.redraw(false);
-                }, i * 400); 
-                animTimeouts.push(t);
-            });
-        }
-
-        const mapToggle = document.getElementById('mapToggle');
-        const mapContent = document.getElementById('mapContent');
-        mapToggle.addEventListener('click', function() {
-            mapContent.classList.toggle('expanded');
-            const icon = this.querySelector('i');
-            if (mapContent.classList.contains('expanded')) {
-                document.getElementById('map-toggle-text').textContent = translations[currentLanguage]['map-hide'];
-                icon.style.transform = 'rotate(180deg)';
-                setTimeout(() => { initMap(); playMapAnimation(); }, 300);
-            } else {
-                document.getElementById('map-toggle-text').textContent = translations[currentLanguage]['map-show'];
-                icon.style.transform = 'rotate(0deg)';
-                animTimeouts.forEach(t => clearTimeout(t));
-            }
-        });
-
-        (function(){ emailjs.init('hz9CzCgK-LggHycqt'); })();
-
-        document.getElementById('legal-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const btn = document.getElementById('btn-submit');
-            const originalText = btn.textContent;
-            btn.classList.add('loading');
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Enviando...';
-            document.getElementById('confirmation').style.display = 'none';
-            document.getElementById('error').style.display = 'none';
-            
-            emailjs.sendForm('LegemConnect', 'template_m5tlbo5', this).then(function() {
-                document.getElementById('confirmation').style.display = 'block';
-                document.getElementById('legal-form').reset();
-                btn.classList.remove('loading');
-                btn.innerHTML = originalText;
-                const lang = currentLanguage;
-                const responseDiv = document.getElementById('response');
-                responseDiv.innerHTML = `
-                    <p><strong>${translations[lang]['response-thanks']}</strong></p>
-                    <p>${translations[lang]['response-general']}</p>
-                    <p>${translations[lang]['response-resources']}</p>
-                    <ul style="text-align: left; margin-top: 5px;">
-                        <li><a href='http://www.abogacia.es/servicios/' target='_blank' style="color:var(--accent-primary)">Abogacía Española</a></li>
-                        <li><a href='https://justiciaoberta.gva.es/es/necessite-un-advocat-i-no-m-ho-puc-pagar/' target='_blank' style="color:var(--accent-primary)">Justicia Gratuita</a></li>
-                    </ul>`;
-                responseDiv.style.display = 'block';
-            }, function(error) {
-                document.getElementById('error').style.display = 'block';
-                btn.classList.remove('loading');
-                btn.innerHTML = originalText;
-            });
-        });
-
-        setLanguage(currentLanguage);
-        renderQuizCard();
     </script>
 </body>
 </html>
