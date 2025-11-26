@@ -643,14 +643,14 @@
     </button>
     <div class="chatbot-container">
         <header class="chatbot-header">
-            <h2>Legal AI Assistant</h2>
+            <h2>Asistente Legal IA</h2>
             <p>Powered by Gemini AI</p>
             <span class="close-btn fa-solid fa-xmark"></span>
         </header>
         <ul class="chatbox">
             <li class="chat incoming">
                 <span class="fa-solid fa-robot"></span>
-                <p>¡Hola! Soy el asistente virtual de Andrei. ¿Tienes alguna duda sobre Derecho, los trabajos publicados o la web? ⚖️</p>
+                <p>¡Hola! Soy el asistente virtual de la web. ¿Tienes alguna duda sobre Derecho, los trabajos publicados o el perfil de Andrei? ⚖️</p>
             </li>
         </ul>
         <div class="chat-input">
@@ -1163,10 +1163,12 @@
                         body: JSON.stringify({
                             contents: [{
                                 parts: [{ 
-                                    text: `Eres AndreiBot, asistente legal experto basado en Gemini.
-                                    Responde dudas sobre derecho español/europeo de forma concisa. 
-                                    Incluye a veces: "No soy abogado, esto es información académica".
-                                    Pregunta: ${userMessage}` 
+                                    text: `Actúa como un Asistente Legal Virtual para la web profesional de Andrei Dima.
+                                    No tienes nombre propio, eres simplemente "el asistente".
+                                    Si te preguntan por Andrei, refiérete a él como "el autor de esta web" o "Andrei Dima", hablando en tercera persona.
+                                    Responde dudas sobre derecho español/europeo de forma concisa basándote en la información académica.
+                                    SIEMPRE incluye al final: "No soy abogado, esto es información académica".
+                                    Pregunta del usuario: ${userMessage}` 
                                 }]
                             }]
                         })
@@ -1239,7 +1241,13 @@
             });
 
             sendChatBtn.addEventListener("click", handleChat);
-            closeBtn.addEventListener("click", () => document.body.classList.remove("show-chatbot"));
+            
+            // CORRECCIÓN BOTÓN CERRAR EN MÓVIL
+            closeBtn.addEventListener("click", () => {
+                document.querySelector(".chatbot-container").classList.remove("show-chat");
+                chatbotToggler.classList.remove("show-chat");
+            });
+
             chatbotToggler.addEventListener("click", () => {
                 document.querySelector(".chatbot-container").classList.toggle("show-chat");
                 chatbotToggler.classList.toggle("show-chat");
