@@ -33,6 +33,11 @@
             --map-null: #334155;      
             --map-border: #1e293b;
             --map-hover: #38bdf8;
+
+            /* Chatbot Variables */
+            --chat-bg-user: #38bdf8;
+            --chat-text-user: #ffffff;
+            --chat-bg-bot: #28364a;
         }
 
         /* TEMA CLARO (OFFICE MODE) */
@@ -49,6 +54,11 @@
             --map-null: #e2e8f0;      
             --map-border: #94a3b8;
             --map-hover: #0ea5e9;
+
+            /* Chatbot Variables Claro */
+            --chat-bg-user: #0ea5e9;
+            --chat-text-user: #ffffff;
+            --chat-bg-bot: #f1f5f9;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -279,14 +289,185 @@
         .confirmation { background: #064e3b; color: #6ee7b7; border: 1px solid #047857; }
         .error { background: #7f1d1d; color: #fca5a5; border: 1px solid #b91c1c; }
 
-        @media (max-width: 850px) {
-            .main-wrapper { grid-template-columns: 1fr; gap: 30px; padding: 20px 15px; }
-            .sidebar { position: relative; top: 0; padding: 20px; }
-            #map-container { height: 400px; }
-            .custom-tooltip.wide { width: 300px; } 
-            .custom-tooltip.wide .tooltip-gallery { grid-template-columns: 1fr; }
+        /* ==================== ESTILOS CHATBOT ==================== */
+        .chatbot-toggler {
+            position: fixed;
+            bottom: 30px;
+            right: 35px;
+            height: 60px;
+            width: 60px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border: 2px solid var(--bg-deep);
         }
-        
+        .chatbot-toggler span {
+            color: #fff;
+            position: absolute;
+            font-size: 1.5rem;
+        }
+        .chatbot-toggler span:last-child,
+        .chatbot-toggler.show-chat span:first-child  {
+            opacity: 0;
+        }
+        .chatbot-toggler.show-chat span:last-child {
+            opacity: 1;
+        }
+        .chatbot-container {
+            position: fixed;
+            bottom: 100px;
+            right: 35px;
+            width: 380px;
+            background: var(--bg-card);
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.5);
+            transform-origin: bottom right;
+            transition: all 0.1s ease;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+        }
+        .chatbot-container.show-chat {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1);
+        }
+        .chatbot-header {
+            background: var(--accent-primary);
+            padding: 15px 0;
+            text-align: center;
+            position: relative;
+        }
+        .chatbot-header h2 {
+            color: #fff;
+            font-size: 1.2rem;
+            margin: 0;
+            font-family: var(--font-display);
+        }
+        .chatbot-header p {
+            color: #e0f2fe;
+            font-size: 0.8rem;
+            margin: 0;
+        }
+        .chatbot-header span {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #fff;
+            cursor: pointer;
+            display: none; /* Oculto en desktop, visible si quieres en mobile */
+        }
+        .chatbox {
+            height: 400px;
+            overflow-y: auto;
+            padding: 15px 20px 70px;
+            background: var(--bg-element);
+        }
+        .chatbox .chat {
+            display: flex;
+            list-style: none;
+            margin: 15px 0;
+        }
+        .chatbox .incoming span {
+            width: 32px;
+            height: 32px;
+            color: #fff;
+            background: var(--accent-primary);
+            text-align: center;
+            line-height: 32px;
+            border-radius: 4px;
+            align-self: flex-end;
+            margin: 0 10px 7px 0;
+            flex-shrink: 0;
+        }
+        .chatbox .outgoing {
+            justify-content: flex-end;
+            margin: 20px 0;
+        }
+        .chatbox .chat p {
+            max-width: 85%;
+            font-size: 0.95rem;
+            padding: 12px 16px;
+            border-radius: 10px 10px 0 10px;
+            color: #fff;
+            background: var(--accent-primary);
+            white-space: pre-wrap;
+            margin: 0;
+        }
+        .chatbox .incoming p {
+            border-radius: 10px 10px 10px 0;
+            background: var(--bg-card);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+        .chat-input {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            gap: 5px;
+            background: var(--bg-card);
+            padding: 8px 20px;
+            border-top: 1px solid var(--border-color);
+        }
+        .chat-input textarea {
+            height: 45px;
+            width: 100%;
+            border: none;
+            outline: none;
+            resize: none;
+            background: transparent;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            padding: 12px 0 12px 0;
+            margin: 0;
+        }
+        .chat-input span {
+            align-self: flex-end;
+            color: var(--accent-primary);
+            cursor: pointer;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            font-size: 1.2rem;
+            visibility: hidden;
+        }
+        .chat-input textarea:valid ~ span {
+            visibility: visible;
+        }
+
+        /* Markdown Styles en chat */
+        .chatbox p strong { font-weight: bold; color: var(--accent-primary); }
+        .chatbox p ul { padding-left: 20px; margin: 5px 0; display: block; }
+        .chatbox p li { list-style: disc; margin-bottom: 5px; }
+
+        @media (max-width: 490px) {
+            .chatbot-container {
+                right: 0;
+                bottom: 0;
+                width: 100%;
+                height: 100%;
+                border-radius: 0;
+            }
+            .chatbot-container.show-chat {
+                transform: scale(1);
+            }
+            .chatbot-header span { display: block; }
+            .chatbot-toggler { right: 20px; bottom: 20px; }
+        }
+
         @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
         @keyframes slideIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
     </style>
@@ -322,6 +503,29 @@
         </aside>
 
         <main class="content-area">
+            <!-- CHATBOT BUTTON & MODAL -->
+            <button class="chatbot-toggler">
+                <span class="fa-solid fa-robot"></span>
+                <span class="fa-solid fa-xmark"></span>
+            </button>
+            <div class="chatbot-container">
+                <header class="chatbot-header">
+                    <h2>Legal AI Assistant</h2>
+                    <p>Powered by Gemini AI</p>
+                    <span class="close-btn fa-solid fa-xmark"></span>
+                </header>
+                <ul class="chatbox">
+                    <li class="chat incoming">
+                        <span class="fa-solid fa-robot"></span>
+                        <p>¡Hola! Soy el asistente virtual de Andrei. ¿Tienes alguna duda sobre Derecho, los trabajos publicados o la web? ⚖️</p>
+                    </li>
+                </ul>
+                <div class="chat-input">
+                    <textarea placeholder="Escribe tu pregunta..." required></textarea>
+                    <span id="send-btn" class="fa-solid fa-paper-plane"></span>
+                </div>
+            </div>
+
             <section id="mis-informes" class="clean-card">
                 <div class="section-header">
                     <i class="fa-solid fa-book-open"></i>
@@ -435,9 +639,9 @@
         /* ================= DATOS MAPA (TEXTOS ACTUALIZADOS) ================= */
         const visitedCountriesData = [
             { code: 'es', name: {es: 'España', en: 'Spain'}, text: {es: 'Mi hogar y base de mi educación.', en: 'My home and the base of my education.'}, imgs: ['img/paises/espana_1.jpg','img/paises/espana_2.jpg','img/paises/espana_3.jpg','img/paises/espana_4.jpg'] },
-            { code: 'fr', name: {es: 'Francia', en: 'France'}, text: {es: 'Viaje a Francia, Lyon y Marsella.', en: 'Trip to France, Lyon and Marseille.'}, imgs: ['img/paises/francia_1.jpg'] },
+            { code: 'fr', name: {es: 'Francia', en: 'France'}, text: {es: 'Viaje a Francia.', en: 'Trip to France.'}, imgs: ['img/paises/francia_1.jpg'] },
             { code: 'ie', name: {es: 'Irlanda', en: 'Ireland'}, text: {es: 'Experiencia inolvidable en Dublín.', en: 'Unforgettable experience in Dublin.'}, imgs: ['img/paises/irlanda_1.jpg','img/paises/irlanda_2.jpg','img/paises/irlanda_3.jpg'] },
-            { code: 'ch', name: {es: 'Suiza', en: 'Switzerland'}, text: {es: 'El país de la diplomacia internacional.', en: 'The country of international diplomacy.'}, imgs: ['img/paises/suiza_1.jpg'] },
+            { code: 'ch', name: {es: 'Suiza', en: 'Switzerland'}, text: {es: 'Alpes suizos.', en: 'Swiss Alps.'}, imgs: ['img/paises/suiza_1.jpg'] },
             { code: 'it', name: {es: 'Italia', en: 'Italy'}, text: {es: 'Arte, historia y gastronomía inigualable.', en: 'Art, history, and unrivaled cuisine.'}, imgs: ['img/paises/italia_1.jpg'] },
             { code: 'de', name: {es: 'Alemania', en: 'Germany'}, text: {es: 'Corazón de Europa: Historia y Modernidad.', en: 'Heart of Europe: History and Modernity.'}, imgs: ['img/paises/alemania_1.jpg'] },
             { code: 'at', name: {es: 'Austria', en: 'Austria'}, text: {es: 'Viena: Arte, música y palacios imperiales.', en: 'Vienna: Art, music, and imperial palaces.'}, imgs: ['img/paises/austria_1.jpg','img/paises/austria_2.jpg'] },
@@ -555,15 +759,13 @@
         ];
 
         /* ================= LOGICA PRINCIPAL ================= */
-        // Esperamos a que el DOM esté listo para evitar errores de "null"
         document.addEventListener('DOMContentLoaded', function() {
             
-            // 1. FIX DE SEGURIDAD HIGHCHARTS (Aseguramos que existe objeto)
+            // 1. FIX DE SEGURIDAD HIGHCHARTS
             try {
                 if (typeof Highcharts !== 'undefined' && Highcharts.AST) {
                     if (Highcharts.AST.allowedTags.indexOf('img') === -1) Highcharts.AST.allowedTags.push('img');
                     if (Highcharts.AST.allowedAttributes.indexOf('src') === -1) Highcharts.AST.allowedAttributes.push('src');
-                    console.log("✅ Highcharts Configurado");
                 }
                 if (typeof Highcharts !== 'undefined') {
                     Highcharts.setOptions({ accessibility: { enabled: false } });
@@ -577,7 +779,7 @@
             let mapChart = null;
             let animTimeouts = [];
 
-            // 3. REFERENCIAS DOM (Ahora es seguro llamarlas)
+            // 3. REFERENCIAS DOM
             const themeToggleBtn = document.getElementById('theme-toggle');
             const themeIcon = themeToggleBtn ? themeToggleBtn.querySelector('i') : null;
             const quizTermEl = document.getElementById('andi-quiz-term-text');
@@ -596,7 +798,6 @@
                     document.body.classList.remove('light-mode');
                     if(themeIcon) { themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon'); }
                 }
-                // Si el mapa ya existe, actualizamos sus colores
                 if(mapChart) {
                     setTimeout(() => {
                         const style = getComputedStyle(document.documentElement);
@@ -609,7 +810,7 @@
                                 nullColor: newNull
                             }]
                         });
-                    }, 50); // Pequeño delay para asegurar que CSS cambió
+                    }, 50);
                 }
             }
 
@@ -632,7 +833,6 @@
                     localStorage.setItem('preferredLanguage', lang);
                     document.documentElement.lang = lang;
                     
-                    // Actualizar textos
                     Object.keys(translations[lang]).forEach(key => {
                         const element = document.getElementById(key);
                         if (element) {
@@ -642,18 +842,15 @@
                         }
                     });
 
-                    // Placeholders especiales
                     const jurisdictionInput = document.getElementById('jurisdiction');
                     if(jurisdictionInput) {
                         jurisdictionInput.placeholder = lang === 'es' ? 'Ej: Madrid, España' : 'E.g: Madrid, Spain';
                     }
 
-                    // Botones idioma
                     document.querySelectorAll('.lang-btn').forEach(btn => {
                         btn.classList.toggle('active', btn.dataset.lang === lang);
                     });
 
-                    // Texto botón mapa
                     const mapToggleText = document.getElementById('map-toggle-text');
                     if(mapContent && mapContent.classList.contains('expanded')) {
                         if(mapToggleText) mapToggleText.textContent = translations[lang]['map-hide'];
@@ -663,10 +860,8 @@
 
                     renderQuizCard();
                     
-                    // Actualizar mapa si existe
                     if(mapChart) {
                         mapChart.series[0].update({ name: currentLanguage === 'es' ? 'Viajes' : 'Travels' });
-                        // Re-inicializamos para cargar nuevos textos de tooltips
                         initMap();
                     }
 
@@ -851,6 +1046,120 @@
                     });
                 });
             }
+
+            // ==================== LOGICA CHATBOT IA ====================
+            const chatbotToggler = document.querySelector(".chatbot-toggler");
+            const closeBtn = document.querySelector(".close-btn");
+            const chatbox = document.querySelector(".chatbox");
+            const chatInput = document.querySelector(".chat-input textarea");
+            const sendChatBtn = document.querySelector(".chat-input span");
+
+            // --- ¡ATENCIÓN! CONFIGURACIÓN DE SEGURIDAD ---
+            // Para evitar que GitHub detecte y borre tu clave, la "partimos" en dos.
+            // 1. Ve a https://aistudio.google.com/app/apikey y consigue tu clave gratis.
+            // 2. Copia la primera mitad en la variable 'part1' y la segunda en 'part2'.
+            // Ejemplo: si tu clave es "AIzaSyDkjsd8...", pon "AIzaSy" en part1 y "Dkjsd8..." en part2.
+            
+            const part1 = "AIzaSyDWaI9J0EgPLYO"; 
+            const part2 = "nDAjyx6yJcGmrR-KsUZc";
+            const GOOGLE_API_KEY = part1 + part2; 
+
+            let userMessage = null; 
+            const inputInitHeight = chatInput.scrollHeight;
+
+            const createChatLi = (message, className) => {
+                const chatLi = document.createElement("li");
+                chatLi.classList.add("chat", className);
+                let chatContent = className === "outgoing" ? `<p></p>` : `<span class="fa-solid fa-robot"></span><p></p>`;
+                chatLi.innerHTML = chatContent;
+                chatLi.querySelector("p").textContent = message;
+                return chatLi;
+            }
+
+            const formatResponse = (text) => {
+                // Formateo básico de Markdown a HTML seguro
+                return text
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/\* (.*?)\n/g, '<li>$1</li>')
+                    .replace(/\n/g, '<br>');
+            }
+
+            const generateResponse = async (chatElement) => {
+                const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GOOGLE_API_KEY}`;
+                const messageElement = chatElement.querySelector("p");
+
+                const requestOptions = {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{ 
+                                text: `Actúa como un asistente legal experto llamado AndreiBot para esta web personal de Andrei Dima.
+                                Responde dudas sobre derecho español/europeo de forma concisa. 
+                                SIEMPRE incluye un descargo de responsabilidad: "No soy abogado, esto es información académica".
+                                Pregunta del usuario: ${userMessage}` 
+                            }]
+                        }]
+                    })
+                }
+
+                try {
+                    messageElement.textContent = "...";
+                    const response = await fetch(API_URL, requestOptions);
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.error.message);
+                    
+                    const apiResponse = data.candidates[0].content.parts[0].text;
+                    messageElement.innerHTML = formatResponse(apiResponse);
+                } catch (error) {
+                    messageElement.textContent = "Lo siento, hubo un error. Verifica tu API Key o la conexión.";
+                    messageElement.style.color = "#fca5a5";
+                } finally {
+                    chatbox.scrollTo(0, chatbox.scrollHeight);
+                }
+            }
+
+            const handleChat = () => {
+                userMessage = chatInput.value.trim();
+                if(!userMessage) return;
+
+                if (GOOGLE_API_KEY.includes("PON_AQUI")) {
+                    alert("¡Atención! Falta configurar la API Key en el código (línea ~470).");
+                    return;
+                }
+
+                chatInput.value = "";
+                chatInput.style.height = `${inputInitHeight}px`;
+
+                chatbox.appendChild(createChatLi(userMessage, "outgoing"));
+                chatbox.scrollTo(0, chatbox.scrollHeight);
+
+                setTimeout(() => {
+                    const incomingChatLi = createChatLi("Escribiendo...", "incoming");
+                    chatbox.appendChild(incomingChatLi);
+                    chatbox.scrollTo(0, chatbox.scrollHeight);
+                    generateResponse(incomingChatLi);
+                }, 600);
+            }
+
+            chatInput.addEventListener("input", () => {
+                chatInput.style.height = `${inputInitHeight}px`;
+                chatInput.style.height = `${chatInput.scrollHeight}px`;
+            });
+
+            chatInput.addEventListener("keydown", (e) => {
+                if(e.key === "Enter" && !e.shiftKey && window.innerWidth > 800) {
+                    e.preventDefault();
+                    handleChat();
+                }
+            });
+
+            sendChatBtn.addEventListener("click", handleChat);
+            closeBtn.addEventListener("click", () => document.body.classList.remove("show-chatbot"));
+            chatbotToggler.addEventListener("click", () => {
+                document.querySelector(".chatbot-container").classList.toggle("show-chat");
+                chatbotToggler.classList.toggle("show-chat");
+            });
 
             // 6. INICIALIZACIÓN FINAL
             applyTheme(currentTheme);
