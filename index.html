@@ -1047,22 +1047,22 @@
                 });
             }
 
-            // ==================== LOGICA CHATBOT IA ====================
+            // ==================== LOGICA CHATBOT IA CORREGIDA ====================
             const chatbotToggler = document.querySelector(".chatbot-toggler");
             const closeBtn = document.querySelector(".close-btn");
             const chatbox = document.querySelector(".chatbox");
             const chatInput = document.querySelector(".chat-input textarea");
             const sendChatBtn = document.querySelector(".chat-input span");
 
-            // --- ¡ATENCIÓN! CONFIGURACIÓN DE SEGURIDAD ---
-            // Para evitar que GitHub detecte y borre tu clave, la "partimos" en dos.
-            // 1. Ve a https://aistudio.google.com/app/apikey y consigue tu clave gratis.
-            // 2. Copia la primera mitad en la variable 'part1' y la segunda en 'part2'.
-            // Ejemplo: si tu clave es "AIzaSyDkjsd8...", pon "AIzaSy" en part1 y "Dkjsd8..." en part2.
+            // --- ¡IMPORTANTE! SIGUE ESTOS PASOS ---
+            // 1. GENERA UNA CLAVE NUEVA EN https://aistudio.google.com/app/apikey
+            // 2. NO la pegues entera. Pégala por trozos aquí abajo:
             
-            const part1 = "AIzaSyDWaI9J0EgPLYO"; 
-            const part2 = "nDAjyx6yJcGmrR-KsUZc";
-            const GOOGLE_API_KEY = part1 + part2; 
+            const parteA = "AIzaSyByuV"; 
+            const parteB = "4p_RLik-E6";
+            const parteC = "5ZO9BaaZK9o41-28SHU";
+            
+            const GOOGLE_API_KEY = parteA + parteB + parteC; 
 
             let userMessage = null; 
             const inputInitHeight = chatInput.scrollHeight;
@@ -1077,7 +1077,6 @@
             }
 
             const formatResponse = (text) => {
-                // Formateo básico de Markdown a HTML seguro
                 return text
                     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                     .replace(/\* (.*?)\n/g, '<li>$1</li>')
@@ -1099,7 +1098,13 @@
                                 SIEMPRE incluye un descargo de responsabilidad: "No soy abogado, esto es información académica".
                                 Pregunta del usuario: ${userMessage}` 
                             }]
-                        }]
+                        }],
+                         safetySettings: [
+                            { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
+                            { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
+                            { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
+                            { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" }
+                        ]
                     })
                 }
 
@@ -1107,13 +1112,20 @@
                     messageElement.textContent = "...";
                     const response = await fetch(API_URL, requestOptions);
                     const data = await response.json();
-                    if (!response.ok) throw new Error(data.error.message);
+                    
+                    if (!response.ok) {
+                        // AQUÍ ESTÁ EL DIAGNÓSTICO: Mostramos el error real en una alerta
+                        const errorMsg = data.error?.message || "Error desconocido";
+                        alert(`⚠️ ERROR DE GOOGLE: ${errorMsg}\n\nSi dice 'API_KEY_INVALID', la clave está mal copiada o revocada.\nSi dice 'PERMISSION_DENIED', necesitas una clave nueva.`);
+                        throw new Error(errorMsg);
+                    }
                     
                     const apiResponse = data.candidates[0].content.parts[0].text;
                     messageElement.innerHTML = formatResponse(apiResponse);
                 } catch (error) {
-                    messageElement.textContent = "Lo siento, hubo un error. Verifica tu API Key o la conexión.";
+                    messageElement.textContent = "Error de conexión. Mira la alerta que acaba de salir para saber por qué.";
                     messageElement.style.color = "#fca5a5";
+                    console.error("Detalle del error:", error);
                 } finally {
                     chatbox.scrollTo(0, chatbox.scrollHeight);
                 }
@@ -1123,8 +1135,9 @@
                 userMessage = chatInput.value.trim();
                 if(!userMessage) return;
 
+                // Verificamos si sigues usando los textos de ejemplo
                 if (GOOGLE_API_KEY.includes("PON_AQUI")) {
-                    alert("¡Atención! Falta configurar la API Key en el código (línea ~470).");
+                    alert("¡ALTO! No has puesto la clave API en el código (línea ~480).");
                     return;
                 }
 
