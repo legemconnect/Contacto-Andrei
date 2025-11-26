@@ -1083,60 +1083,96 @@
                     .replace(/\n/g, '<br>');
             }
 
-            // Función para llamar a la IA (intenta modelo A, si falla, modelo B)
-            const fetchGeminiResponse = async (modelName, historyText) => {
-                const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GOOGLE_API_KEY}`;
-                
-                // Configuración básica sin filtros de seguridad complejos que puedan romper la llamada legacy
-                const payload = {
-                    contents: [{
-                        parts: [{ 
-                            text: `Eres AndreiBot, asistente legal experto.
-                            Responde dudas sobre derecho español/europeo de forma concisa. 
-                            SIEMPRE di: "No soy abogado, esto es información académica".
-                            Pregunta: ${historyText}` 
-                        }]
-                    }]
-                };
+            // --- FUNCIÓN DE AUTODETECCIÓN DE MODELO ---
+            // Le pregunta a Google qué modelos están disponibles para esta clave
+            let autoDetectedModel = null;
 
-                const response = await fetch(API_URL, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(payload)
-                });
-                
-                const data = await response.json();
-                if (!response.ok) {
-                    throw new Error(data.error?.message || "Error desconocido");
+            const detectBestModel = async () => {
+                const API_URL = `https://generativelanguage.googleapis.com/v1beta/models?key=${GOOGLE_API_KEY}`;
+                try {
+                    const response = await fetch(API_URL);
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.error?.message || "Error al listar modelos");
+                    
+                    // Buscamos si existe 'gemini-1.5-flash' o 'gemini-pro' en la lista
+                    const models = data.models || [];
+                    const flash = models.find(m => m.name.includes("gemini-1.5-flash"));
+                    const pro = models.find(m => m.name.includes("gemini-pro"));
+                    const onePointZero = models.find(m => m.name.includes("gemini-1.0-pro"));
+                    
+                    // Elegimos el mejor disponible
+                    if (flash) return flash.name.replace("models/", "");
+                    if (pro) return pro.name.replace("models/", "");
+                    if (onePointZero) return onePointZero.name.replace("models/", "");
+                    
+                    // Si no encontramos los conocidos, cogemos el primero que sirva para generar texto
+                    const fallback = models.find(m => m.supportedGenerationMethods && m.supportedGenerationMethods.includes("generateContent"));
+                    if (fallback) return fallback.name.replace("models/", "");
+
+                    throw new Error("No se encontraron modelos compatibles con generateContent");
+                } catch (e) {
+                    console.warn("Fallo en autodetección:", e);
+                    return null; // Si falla la detección, volveremos al método manual
                 }
-                return data.candidates[0].content.parts[0].text;
             };
 
             const generateResponse = async (chatElement) => {
                 const messageElement = chatElement.querySelector("p");
+                messageElement.textContent = "...";
 
                 try {
-                    messageElement.textContent = "...";
-                    
-                    // INTENTO 1: Modelo Moderno (Flash)
-                    try {
-                        console.log("Intentando con modelo Flash...");
-                        const text = await fetchGeminiResponse("gemini-1.5-flash", userMessage);
-                        messageElement.innerHTML = formatResponse(text);
-                    } catch (errorFlash) {
-                        console.warn("Fallo Flash, intentando Pro...", errorFlash);
-                        // INTENTO 2: Modelo Legacy (Pro) - Muy compatible
-                        const textBackup = await fetchGeminiResponse("gemini-pro", userMessage);
-                        messageElement.innerHTML = formatResponse(textBackup);
+                    // 1. Detectamos el modelo si aún no lo tenemos
+                    if (!autoDetectedModel) {
+                         console.log("Detectando modelo óptimo...");
+                         autoDetectedModel = await detectBestModel();
+                         console.log("Modelo detectado:", autoDetectedModel);
                     }
 
-                } catch (errorFinal) {
-                    // Si todo falla
+                    // 2. Si la detección falló, intentamos los nombres estándar por defecto
+                    const modelToUse = autoDetectedModel || "gemini-1.5-flash";
+                    
+                    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${modelToUse}:generateContent?key=${GOOGLE_API_KEY}`;
+                    
+                    const requestOptions = {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            contents: [{
+                                parts: [{ 
+                                    text: `Eres AndreiBot, asistente legal experto.
+                                    Responde dudas sobre derecho español/europeo de forma concisa. 
+                                    SIEMPRE incluye: "No soy abogado, esto es información académica".
+                                    Pregunta: ${userMessage}` 
+                                }]
+                            }]
+                        })
+                    };
+
+                    const response = await fetch(API_URL, requestOptions);
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        const errorMsg = data.error?.message || "Error desconocido";
+                        // Si falla con el modelo detectado, reseteamos para volver a detectar la próxima vez
+                        autoDetectedModel = null; 
+                        throw new Error(errorMsg);
+                    }
+                    
+                    const apiResponse = data.candidates[0].content.parts[0].text;
+                    messageElement.innerHTML = formatResponse(apiResponse);
+
+                } catch (error) {
                     messageElement.textContent = "Error de conexión. Verifica la clave API.";
                     messageElement.style.color = "#fca5a5";
-                    console.error("Fallo total:", errorFinal);
-                    if (errorFinal.message.includes("API_KEY_INVALID")) {
-                         alert("Error: La clave API es incorrecta. Revísala.");
+                    console.error("Fallo chatbot:", error);
+                    
+                    if (error.message.includes("API_KEY_INVALID")) {
+                         alert("⚠️ CLAVE INCORRECTA: La API Key no es válida. Revisa que la hayas copiado bien.");
+                    } else if (error.message.includes("not found")) {
+                        // Si incluso la detección falló o el modelo no existe
+                        alert("⚠️ MODELO NO ENCONTRADO: Parece que tu cuenta de Google no tiene acceso a los modelos estándar. Intenta crear una API Key en un proyecto nuevo de Google Cloud.");
+                    } else {
+                        alert(`⚠️ ERROR: ${error.message}`);
                     }
                 } finally {
                     chatbox.scrollTo(0, chatbox.scrollHeight);
