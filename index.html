@@ -383,8 +383,7 @@
     </div>
 
     <script>
-        /* ================= DATOS MAPA (RUTAS LOCALES) ================= */
-        // Asegúrate que estos nombres sean IDÉNTICOS a tus archivos en GitHub
+        /* ================= DATOS MAPA ================= */
         const visitedCountriesData = [
             { code: 'es', name: {es: 'España', en: 'Spain'}, text: {es: 'Mi hogar y base de mi educación.', en: 'My home and the base of my education.'}, imgs: ['img/paises/espana_1.jpg','img/paises/espana_2.jpg','img/paises/espana_3.jpg','img/paises/espana_4.jpg'] },
             { code: 'fr', name: {es: 'Francia', en: 'France'}, text: {es: 'Viaje a Francia.', en: 'Trip to France.'}, imgs: ['img/paises/francia_1.jpg'] },
@@ -580,38 +579,28 @@
             renderQuizCard();
         });
 
-        /* ==================== FIX DE SEGURIDAD (IMPORTANTE) ==================== */
-        // Este bloque desbloquea las imágenes en Highcharts
+        /* ==================== FIX DE SEGURIDAD ==================== */
         try {
             if (Highcharts && Highcharts.AST) {
-                // Permitimos la etiqueta IMG
-                if (Highcharts.AST.allowedTags.indexOf('img') === -1) {
-                    Highcharts.AST.allowedTags.push('img');
-                }
-                // Permitimos el atributo SRC
-                if (Highcharts.AST.allowedAttributes.indexOf('src') === -1) {
-                    Highcharts.AST.allowedAttributes.push('src');
-                }
+                if (Highcharts.AST.allowedTags.indexOf('img') === -1) Highcharts.AST.allowedTags.push('img');
+                if (Highcharts.AST.allowedAttributes.indexOf('src') === -1) Highcharts.AST.allowedAttributes.push('src');
                 console.log("✅ Seguridad de Highcharts ajustada: Imágenes permitidas.");
-            } else {
-                console.warn("⚠️ No se encontró el módulo AST de Highcharts.");
             }
-            
-            // Desactiva el aviso de accesibilidad
-            Highcharts.setOptions({
-                accessibility: { enabled: false }
-            });
-
-        } catch (e) {
-            console.error("Error ajustando seguridad de Highcharts:", e);
-        }
-        /* ======================================================================= */
+            Highcharts.setOptions({ accessibility: { enabled: false } });
+        } catch (e) { console.error("Error ajustando Highcharts:", e); }
+        /* ========================================================== */
 
         let mapChart = null;
         let animTimeouts = [];
 
         function initMap() {
             if (mapChart) mapChart.destroy();
+            
+            // --- NUEVO: DEFINIR LA URL BASE ABSOLUTA ---
+            // Esto obliga al navegador a buscar en la dirección correcta de internet
+            const repoBaseUrl = 'https://legemconnect.github.io/Contacto-Andrei/';
+            // -------------------------------------------
+
             mapChart = Highcharts.mapChart('map-container', {
                 chart: { map: 'custom/europe', backgroundColor: 'transparent', animation: false },
                 title: { text: '' },
@@ -633,12 +622,22 @@
                         const lang = currentLanguage;
                         const isWideClass = images.length > 1 ? 'wide' : '';
                         let imagesHtml = '';
+                        
+                        // --- AQUÍ ESTÁ EL ARREGLO DE LA RUTA ---
                         if (images.length > 0) {
                             imagesHtml = '<div class="tooltip-gallery">';
-                            // IMPORTANTE: Asegúrate de que las rutas 'img/...' sean correctas
-                            images.forEach(img => { imagesHtml += `<img src="${img}" alt="Foto viaje">`; });
+                            images.forEach(img => { 
+                                // Forzamos la URL completa si no es una URL externa
+                                let finalSrc = img;
+                                if (!img.startsWith('http')) {
+                                    finalSrc = repoBaseUrl + img;
+                                }
+                                imagesHtml += `<img src="${finalSrc}" alt="Foto viaje" style="display:block;">`; 
+                            });
                             imagesHtml += '</div>';
                         }
+                        // ---------------------------------------
+
                         const name = point.customName[lang];
                         const text = point.customText[lang];
                         return `
@@ -704,22 +703,16 @@
             event.preventDefault();
             const btn = document.getElementById('btn-submit');
             const originalText = btn.textContent;
-            
-            // ANIMACIÓN BOTÓN
             btn.classList.add('loading');
             btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Enviando...';
-            
             document.getElementById('confirmation').style.display = 'none';
             document.getElementById('error').style.display = 'none';
             
             emailjs.sendForm('LegemConnect', 'template_m5tlbo5', this).then(function() {
                 document.getElementById('confirmation').style.display = 'block';
                 document.getElementById('legal-form').reset();
-                
-                // RESTAURAR BOTÓN
                 btn.classList.remove('loading');
                 btn.innerHTML = originalText;
-                
                 const lang = currentLanguage;
                 const responseDiv = document.getElementById('response');
                 responseDiv.innerHTML = `
