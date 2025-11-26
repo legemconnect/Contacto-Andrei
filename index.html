@@ -1047,7 +1047,7 @@
                 });
             }
 
-            // ==================== LOGICA CHATBOT IA CORREGIDA ====================
+            // ==================== LOGICA CHATBOT IA INTELIGENTE V3 ====================
             const chatbotToggler = document.querySelector(".chatbot-toggler");
             const closeBtn = document.querySelector(".close-btn");
             const chatbox = document.querySelector(".chatbox");
@@ -1083,49 +1083,61 @@
                     .replace(/\n/g, '<br>');
             }
 
-            const generateResponse = async (chatElement) => {
-                const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GOOGLE_API_KEY}`;
-                const messageElement = chatElement.querySelector("p");
+            // Función para llamar a la IA (intenta modelo A, si falla, modelo B)
+            const fetchGeminiResponse = async (modelName, historyText) => {
+                const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GOOGLE_API_KEY}`;
+                
+                // Configuración básica sin filtros de seguridad complejos que puedan romper la llamada legacy
+                const payload = {
+                    contents: [{
+                        parts: [{ 
+                            text: `Eres AndreiBot, asistente legal experto.
+                            Responde dudas sobre derecho español/europeo de forma concisa. 
+                            SIEMPRE di: "No soy abogado, esto es información académica".
+                            Pregunta: ${historyText}` 
+                        }]
+                    }]
+                };
 
-                const requestOptions = {
+                const response = await fetch(API_URL, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [{ 
-                                text: `Actúa como un asistente legal experto llamado AndreiBot para esta web personal de Andrei Dima.
-                                Responde dudas sobre derecho español/europeo de forma concisa. 
-                                SIEMPRE incluye un descargo de responsabilidad: "No soy abogado, esto es información académica".
-                                Pregunta del usuario: ${userMessage}` 
-                            }]
-                        }],
-                         safetySettings: [
-                            { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
-                            { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
-                            { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
-                            { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" }
-                        ]
-                    })
+                    body: JSON.stringify(payload)
+                });
+                
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.error?.message || "Error desconocido");
                 }
+                return data.candidates[0].content.parts[0].text;
+            };
+
+            const generateResponse = async (chatElement) => {
+                const messageElement = chatElement.querySelector("p");
 
                 try {
                     messageElement.textContent = "...";
-                    const response = await fetch(API_URL, requestOptions);
-                    const data = await response.json();
                     
-                    if (!response.ok) {
-                        // AQUÍ ESTÁ EL DIAGNÓSTICO: Mostramos el error real en una alerta
-                        const errorMsg = data.error?.message || "Error desconocido";
-                        alert(`⚠️ ERROR DE GOOGLE: ${errorMsg}\n\nSi dice 'API_KEY_INVALID', la clave está mal copiada o revocada.\nSi dice 'PERMISSION_DENIED', necesitas una clave nueva.`);
-                        throw new Error(errorMsg);
+                    // INTENTO 1: Modelo Moderno (Flash)
+                    try {
+                        console.log("Intentando con modelo Flash...");
+                        const text = await fetchGeminiResponse("gemini-1.5-flash", userMessage);
+                        messageElement.innerHTML = formatResponse(text);
+                    } catch (errorFlash) {
+                        console.warn("Fallo Flash, intentando Pro...", errorFlash);
+                        // INTENTO 2: Modelo Legacy (Pro) - Muy compatible
+                        const textBackup = await fetchGeminiResponse("gemini-pro", userMessage);
+                        messageElement.innerHTML = formatResponse(textBackup);
                     }
-                    
-                    const apiResponse = data.candidates[0].content.parts[0].text;
-                    messageElement.innerHTML = formatResponse(apiResponse);
-                } catch (error) {
-                    messageElement.textContent = "Error de conexión. Mira la alerta que acaba de salir para saber por qué.";
+
+                } catch (errorFinal) {
+                    // Si todo falla
+                    messageElement.textContent = "Error de conexión. Verifica la clave API.";
                     messageElement.style.color = "#fca5a5";
-                    console.error("Detalle del error:", error);
+                    console.error("Fallo total:", errorFinal);
+                    if (errorFinal.message.includes("API_KEY_INVALID")) {
+                         alert("Error: La clave API es incorrecta. Revísala.");
+                    }
                 } finally {
                     chatbox.scrollTo(0, chatbox.scrollHeight);
                 }
@@ -1135,7 +1147,6 @@
                 userMessage = chatInput.value.trim();
                 if(!userMessage) return;
 
-                // Verificamos si sigues usando los textos de ejemplo
                 if (GOOGLE_API_KEY.includes("PON_AQUI")) {
                     alert("¡ALTO! No has puesto la clave API en el código (línea ~480).");
                     return;
