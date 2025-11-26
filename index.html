@@ -178,12 +178,18 @@
         .map-content.expanded { max-height: 600px; opacity: 1; margin-top: 20px; }
         #map-container { height: 500px; width: 100%; border-radius: 8px; background: #182333; }
 
+        /* --- ESTILOS TOOLTIP MODIFICADOS PARA FOTOS MÁS GRANDES --- */
         .custom-tooltip {
             padding: 12px;
             text-align: center; color: #333;
-            width: 200px; transition: width 0.3s ease;
+            /* ANTES: width: 200px; AHORA: */
+            width: 300px; 
+            transition: width 0.3s ease;
         }
-        .custom-tooltip.wide { width: 360px; }
+        .custom-tooltip.wide { 
+            /* ANTES: width: 360px; AHORA: */
+            width: 480px; 
+        }
         .tooltip-gallery {
             display: grid;
             grid-template-columns: 1fr; gap: 6px; margin-bottom: 8px;
@@ -191,9 +197,12 @@
         .custom-tooltip.wide .tooltip-gallery { grid-template-columns: 1fr 1fr; }
         .tooltip-gallery img {
             width: 100%;
-            height: 110px; object-fit: cover;
+            /* ANTES: height: 110px; AHORA: */
+            height: 180px; 
+            object-fit: cover;
             border-radius: 6px; background-color: #ddd;
         }
+        /* --------------------------------------------------------- */
 
         /* Formulario */
         form label { font-size: 0.9rem; color: var(--text-muted); margin-top: 15px; display: block; }
@@ -238,7 +247,9 @@
             .main-wrapper { grid-template-columns: 1fr; gap: 30px; padding: 20px 15px; }
             .sidebar { position: relative; top: 0; padding: 20px; }
             #map-container { height: 400px; }
-            .custom-tooltip.wide { width: 280px; }
+            /* Ajuste para móviles también */
+            .custom-tooltip.wide { width: 300px; } 
+            .custom-tooltip.wide .tooltip-gallery { grid-template-columns: 1fr; }
         }
         
         @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
@@ -597,7 +608,6 @@
             if (mapChart) mapChart.destroy();
             
             // --- NUEVO: DEFINIR LA URL BASE ABSOLUTA ---
-            // Esto obliga al navegador a buscar en la dirección correcta de internet
             const repoBaseUrl = 'https://legemconnect.github.io/Contacto-Andrei/';
             // -------------------------------------------
 
@@ -627,7 +637,6 @@
                         if (images.length > 0) {
                             imagesHtml = '<div class="tooltip-gallery">';
                             images.forEach(img => { 
-                                // Forzamos la URL completa si no es una URL externa
                                 let finalSrc = img;
                                 if (!img.startsWith('http')) {
                                     finalSrc = repoBaseUrl + img;
@@ -643,8 +652,8 @@
                         return `
                         <div class="custom-tooltip ${isWideClass}">
                             ${imagesHtml}
-                            <h4 style="margin: 5px 0 5px 0; color:#2874A6; font-size:1.1em;">${name}</h4>
-                            <p style="font-size:0.85em; margin:0; line-height:1.4;">${text || ''}</p>
+                            <h4 style="margin: 8px 0 5px 0; color:#2874A6; font-size:1.25em;">${name}</h4>
+                            <p style="font-size:0.9em; margin:0; line-height:1.4;">${text || ''}</p>
                         </div>`;
                     }
                 },
