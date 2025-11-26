@@ -14,18 +14,35 @@
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
     <style>
-        /* --- 1. VARIABLES & RESET --- */
+        /* --- 1. VARIABLES & RESET (SISTEMA DE TEMAS) --- */
         :root {
-            --bg-deep: #0f172a;
-            --bg-card: #1e293b;
-            --accent-primary: #38bdf8; 
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
+            /* TEMA OSCURO (POR DEFECTO) */
+            --bg-deep: #0f172a;       /* Fondo principal oscuro */
+            --bg-card: #1e293b;       /* Fondo tarjetas */
+            --bg-element: #28364a;    /* Fondo botones/inputs */
+            --accent-primary: #38bdf8; /* Azul cyan */
+            --text-main: #f1f5f9;     /* Texto blanco */
+            --text-muted: #94a3b8;    /* Texto gris */
+            --border-color: #334155;  /* Bordes */
             --radius-lg: 24px;
             --radius-sm: 12px;
             --font-main: 'Inter', sans-serif;
             --font-display: 'Space Grotesk', sans-serif;
-            --border-color: #334155;
+            --map-null: #334155;      /* Color países no visitados mapa */
+            --map-border: #1e293b;    /* Bordes mapa */
+        }
+
+        /* TEMA CLARO (OFFICE MODE) */
+        body.light-mode {
+            --bg-deep: #f8fafc;       /* Blanco grisáceo */
+            --bg-card: #ffffff;       /* Blanco puro */
+            --bg-element: #f1f5f9;    /* Gris muy claro */
+            --accent-primary: #0ea5e9; /* Azul un poco más oscuro para contraste */
+            --text-main: #1e293b;     /* Texto oscuro (casi negro) */
+            --text-muted: #64748b;    /* Gris medio */
+            --border-color: #e2e8f0;  /* Bordes suaves */
+            --map-null: #e2e8f0;      /* Mapa claro */
+            --map-border: #cbd5e1;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -37,7 +54,7 @@
             line-height: 1.6;
             min-height: 100vh;
             overflow-x: hidden;
-            transition: opacity 0.2s ease-in-out; 
+            transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave de tema */
             opacity: 1;
         }
 
@@ -66,8 +83,9 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra más suave */
             z-index: 10;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
         .profile-img-wrapper {
@@ -86,11 +104,12 @@
             width: 100%;
             height: 100%; object-fit: contain;
             border-radius: 14px; background: #fff; border: 3px solid var(--bg-card);
+            transition: border-color 0.3s ease;
         }
 
         .sidebar h3 {
             font-family: var(--font-display);
-            font-size: 1.6rem; margin-bottom: 5px; color: #fff;
+            font-size: 1.6rem; margin-bottom: 5px; color: var(--text-main); /* Adaptable */
         }
 
         .tagline {
@@ -103,13 +122,13 @@
         .social-links a {
             width: 42px;
             height: 42px; display: flex; align-items: center; justify-content: center;
-            border-radius: 50%; background: #334155; color: var(--text-main);
+            border-radius: 50%; background: var(--bg-element); color: var(--text-main);
             transition: all 0.2s; text-decoration: none;
-            font-size: 1.2rem;
+            font-size: 1.2rem; border: 1px solid var(--border-color);
         }
         .social-links a:hover {
             background: var(--accent-primary);
-            color: #0f172a; transform: translateY(-2px);
+            color: #fff; transform: translateY(-2px); border-color: var(--accent-primary);
         }
 
         /* --- 4. CONTENT AREA --- */
@@ -127,20 +146,24 @@
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-sm); padding: 25px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
 
         ul { list-style: none; padding: 0; display: grid; gap: 12px; }
         .link-card {
             display: flex;
             align-items: center; padding: 15px;
-            background-color: #28364a; border-radius: 8px;
+            background-color: var(--bg-element); 
+            border: 1px solid var(--border-color); /* Añadido borde sutil */
+            border-radius: 8px;
             text-decoration: none; color: var(--text-main);
-            transition: background 0.2s, transform 0.2s; font-weight: 500;
+            transition: all 0.2s; font-weight: 500;
         }
         .link-card:hover {
-            background-color: #334155;
+            background-color: var(--bg-card);
             transform: translateX(5px); color: var(--accent-primary);
+            border-color: var(--accent-primary);
         }
         .link-card i { margin-right: 15px; color: var(--accent-primary); width: 20px; text-align: center; }
 
@@ -148,11 +171,11 @@
         .andi-quiz-term strong {
             display: block;
             font-size: 2rem; font-family: var(--font-display);
-            color: #fff; margin: 10px 0;
+            color: var(--text-main); margin: 10px 0;
             transition: color 0.3s;
         }
         .andi-quiz-answer {
-            background: #064e3b;
+            background: #064e3b; /* Mantener verde oscuro para contraste del texto */
             color: #6ee7b7; padding: 10px;
             border-radius: 8px; margin: 20px 0; display: none; font-weight: bold;
         }
@@ -162,34 +185,33 @@
             border-radius: 6px; border: none;
             font-weight: 600; cursor: pointer; transition: 0.2s;
         }
-        #andi-btn-reveal { background: var(--accent-primary); color: #0f172a; }
+        #andi-btn-reveal { background: var(--accent-primary); color: #fff; }
         
         /* Mapa */
         .map-toggle {
             width: 100%;
-            padding: 15px; background: #28364a; color: var(--text-main);
-            border: none; border-radius: 8px; cursor: pointer;
+            padding: 15px; background: var(--bg-element); color: var(--text-main);
+            border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer;
             display: flex; justify-content: space-between; align-items: center;
+            transition: background-color 0.3s ease;
         }
+        .map-toggle:hover { background-color: var(--bg-card); border-color: var(--accent-primary); }
+
         .map-content {
             max-height: 0;
             overflow: hidden; transition: max-height 0.5s ease; opacity: 0;
         }
         .map-content.expanded { max-height: 600px; opacity: 1; margin-top: 20px; }
-        #map-container { height: 500px; width: 100%; border-radius: 8px; background: #182333; }
+        #map-container { height: 500px; width: 100%; border-radius: 8px; background: var(--bg-element); transition: background-color 0.3s ease;}
 
-        /* --- ESTILOS TOOLTIP MODIFICADOS PARA FOTOS MÁS GRANDES --- */
+        /* --- ESTILOS TOOLTIP --- */
         .custom-tooltip {
             padding: 12px;
-            text-align: center; color: #333;
-            /* ANTES: width: 200px; AHORA: */
+            text-align: center; color: #333; /* Texto siempre oscuro dentro del tooltip blanco */
             width: 300px; 
             transition: width 0.3s ease;
         }
-        .custom-tooltip.wide { 
-            /* ANTES: width: 360px; AHORA: */
-            width: 480px; 
-        }
+        .custom-tooltip.wide { width: 480px; }
         .tooltip-gallery {
             display: grid;
             grid-template-columns: 1fr; gap: 6px; margin-bottom: 8px;
@@ -197,42 +219,51 @@
         .custom-tooltip.wide .tooltip-gallery { grid-template-columns: 1fr 1fr; }
         .tooltip-gallery img {
             width: 100%;
-            /* ANTES: height: 110px; AHORA: */
             height: 180px; 
             object-fit: cover;
             border-radius: 6px; background-color: #ddd;
         }
-        /* --------------------------------------------------------- */
 
         /* Formulario */
         form label { font-size: 0.9rem; color: var(--text-muted); margin-top: 15px; display: block; }
         input, textarea {
             width: 100%;
             padding: 12px; margin-top: 5px;
-            background: #0f172a; border: 1px solid var(--border-color);
-            border-radius: 6px; color: #fff; font-family: inherit;
+            background: var(--bg-deep); /* Input se adapta al fondo */
+            border: 1px solid var(--border-color);
+            border-radius: 6px; color: var(--text-main); font-family: inherit;
+            transition: border-color 0.2s;
         }
+        input:focus, textarea:focus { outline:none; border-color: var(--accent-primary); }
+
         button[type="submit"] {
             width: 100%;
             padding: 14px; margin-top: 25px;
-            background: var(--accent-primary); color: #0f172a;
+            background: var(--accent-primary); color: #fff;
             border: none; font-weight: 700; border-radius: 6px; cursor: pointer;
             transition: all 0.3s ease;
         }
         button[type="submit"].loading {
-            background: #475569;
-            color: #94a3b8; cursor: not-allowed;
+            background: var(--text-muted);
+            color: var(--bg-deep); cursor: not-allowed;
         }
 
-        .language-selector { margin-bottom: 20px; display: flex; justify-content: center; gap: 10px; }
-        .lang-btn {
+        /* CONTROLES (IDIOMA Y TEMA) */
+        .controls-wrapper {
+            margin-bottom: 20px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
+        }
+        .control-btn {
             background: transparent;
             border: 1px solid var(--border-color);
             color: var(--text-muted); padding: 6px 16px; border-radius: 20px; cursor: pointer;
-            font-size: 0.95rem; display: flex; align-items: center;
-            gap: 6px;
+            font-size: 0.95rem; display: flex; align-items: center; gap: 6px;
+            transition: all 0.2s ease;
         }
-        .lang-btn.active { background: var(--accent-primary); color: #0f172a; border-color: var(--accent-primary); font-weight: bold; }
+        .control-btn:hover { border-color: var(--text-muted); color: var(--text-main); }
+        .control-btn.active { background: var(--accent-primary); color: #fff; border-color: var(--accent-primary); font-weight: bold; }
+        
+        /* Botón de tema específico */
+        #theme-toggle i { font-size: 1rem; }
 
         footer { margin-top: 50px; text-align: center; font-size: 0.8rem; color: var(--text-muted); padding-bottom: 20px;}
         .confirmation, .error { 
@@ -247,7 +278,6 @@
             .main-wrapper { grid-template-columns: 1fr; gap: 30px; padding: 20px 15px; }
             .sidebar { position: relative; top: 0; padding: 20px; }
             #map-container { height: 400px; }
-            /* Ajuste para móviles también */
             .custom-tooltip.wide { width: 300px; } 
             .custom-tooltip.wide .tooltip-gallery { grid-template-columns: 1fr; }
         }
@@ -260,9 +290,12 @@
 
     <div class="main-wrapper">
         <aside class="sidebar">
-            <div class="language-selector">
-                <button class="lang-btn active" data-lang="es">🇪🇸 ES</button>
-                <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
+            <div class="controls-wrapper">
+                <button class="control-btn lang-btn active" data-lang="es">🇪🇸 ES</button>
+                <button class="control-btn lang-btn" data-lang="en">🇬🇧 EN</button>
+                <button class="control-btn" id="theme-toggle" title="Cambiar Tema">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
             </div>
 
             <div class="profile-img-wrapper">
@@ -342,7 +375,7 @@
                 <div class="andi-quiz-answer" id="andi-quiz-answer">Lawyer</div>
                 <div class="andi-quiz-controls">
                     <button id="andi-btn-reveal" type="button">Revelar</button>
-                    <button id="andi-btn-next" class="secondary" type="button" style="background:transparent; border:1px solid #334155; color:#fff; margin-left:10px;">Siguiente</button>
+                    <button id="andi-btn-next" class="secondary" type="button" style="background:transparent; border:1px solid var(--border-color); color:var(--text-main); margin-left:10px;">Siguiente</button>
                 </div>
             </section>
 
@@ -383,7 +416,7 @@
                 </form>
                 <div id="confirmation" class="confirmation"><span id="confirmation-text">¡Enviado correctamente!</span></div>
                 <div id="error" class="error"><span id="error-text">Error al enviar.</span></div>
-                <div id="response" style="display:none; margin-top: 20px; background: #182333; padding: 15px; border-radius: 6px; border-left: 3px solid var(--accent-primary);"></div>
+                <div id="response" style="display:none; margin-top: 20px; background: var(--bg-element); padding: 15px; border-radius: 6px; border-left: 3px solid var(--accent-primary);"></div>
             </section>
 
             <footer>
@@ -517,6 +550,47 @@
         ];
 
         let currentLanguage = localStorage.getItem('preferredLanguage') || 'es';
+        
+        // --- LOGICA DE TEMA CLARO/OSCURO ---
+        let currentTheme = localStorage.getItem('preferredTheme') || 'dark';
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = themeToggleBtn.querySelector('i');
+
+        function applyTheme(theme) {
+            if (theme === 'light') {
+                document.body.classList.add('light-mode');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                document.body.classList.remove('light-mode');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+            // Actualizar mapa si está visible
+            if(mapChart) {
+                // Pequeño delay para dejar que CSS aplique colores
+                setTimeout(() => {
+                    initMap(); 
+                    // No volvemos a lanzar la animación para no marear
+                    if (document.getElementById('mapContent').classList.contains('expanded')) {
+                        // Solo redibujar
+                        const data = mapChart.series[0].data;
+                        mapChart.redraw();
+                    }
+                }, 100);
+            }
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('preferredTheme', currentTheme);
+            applyTheme(currentTheme);
+        });
+
+        // Aplicar al inicio
+        applyTheme(currentTheme);
+        // -----------------------------------
+
         let currentQuizIndex = 0;
 
         function setLanguage(lang) {
@@ -611,6 +685,11 @@
             const repoBaseUrl = 'https://legemconnect.github.io/Contacto-Andrei/';
             // -------------------------------------------
 
+            // Detectar colores según el tema actual (usando CSS variables computadas)
+            const style = getComputedStyle(document.body);
+            const borderColor = style.getPropertyValue('--map-border').trim();
+            const nullColor = style.getPropertyValue('--map-null').trim();
+
             mapChart = Highcharts.mapChart('map-container', {
                 chart: { map: 'custom/europe', backgroundColor: 'transparent', animation: false },
                 title: { text: '' },
@@ -661,9 +740,9 @@
                     data: [],
                     name: currentLanguage === 'es' ? 'Viajes' : 'Travels',
                     joinBy: 'hc-key',
-                    borderColor: '#1e293b', 
+                    borderColor: borderColor, 
                     borderWidth: 1,
-                    nullColor: '#334155', 
+                    nullColor: nullColor, 
                     states: { hover: { color: '#38bdf8' } }
                 }]
             });
