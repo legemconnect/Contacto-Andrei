@@ -16,7 +16,13 @@
             color: #1F2937; /* Dark gray text */
         }
         
-        /* Vibrant Palette Variables */
+        /* Vibrant Palette Variables (Applied via Tailwind config mostly, but reference here) 
+           Primary Blue: #2563EB (blue-600)
+           Accent Cyan: #06B6D4 (cyan-500)
+           Alert Orange: #F97316 (orange-500)
+           Deep Navy: #1E3A8A (blue-900)
+        */
+
         .chart-container {
             position: relative;
             width: 100%;
@@ -51,9 +57,16 @@
             margin: 0 auto;
         }
     </style>
+    <!-- 
+        Palette Choice: Vibrant & Professional (Blue/Cyan/Orange) 
+        Source: Adapted from "Energetic & Playful" concepts to maintain professional trust while remaining engaging.
+        NO SVG used.
+        NO Mermaid JS used.
+    -->
 </head>
 <body class="bg-gray-50">
 
+    <!-- HERO SECTION -->
     <header class="bg-gradient-to-r from-blue-900 via-blue-700 to-cyan-600 text-white py-16 px-4 shadow-lg">
         <div class="max-w-6xl mx-auto text-center">
             <h1 class="text-4xl md:text-6xl font-black mb-4 tracking-tight">TU WEB LEGAL EN ESPAÑA</h1>
@@ -66,6 +79,7 @@
 
     <main class="max-w-6xl mx-auto px-4 py-10 space-y-16">
 
+        <!-- INTRODUCCIÓN -->
         <section class="text-center max-w-4xl mx-auto">
             <h2 class="text-3xl font-bold text-blue-900 mb-6">El Escenario Legal Digital</h2>
             <p class="text-lg text-gray-700 leading-relaxed">
@@ -73,6 +87,7 @@
             </p>
         </section>
 
+        <!-- SECTION 1: THE COST OF NON-COMPLIANCE -->
         <section>
             <div class="mb-8 border-l-4 border-orange-500 pl-4">
                 <h3 class="text-2xl font-bold text-gray-800">El Coste del Incumplimiento</h3>
@@ -105,6 +120,7 @@
             </div>
         </section>
 
+        <!-- SECTION 2: THE 3 PILLARS (CARDS) -->
         <section class="bg-blue-50 p-8 rounded-xl">
             <div class="text-center mb-10">
                 <h3 class="text-3xl font-bold text-blue-900">Los 3 Textos Legales Obligatorios</h3>
@@ -112,6 +128,7 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
                 <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-1 transition duration-300">
                     <div class="bg-cyan-500 h-2 w-full"></div>
                     <div class="p-6">
@@ -128,6 +145,7 @@
                     </div>
                 </div>
 
+                <!-- Card 2 -->
                 <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-1 transition duration-300">
                     <div class="bg-blue-600 h-2 w-full"></div>
                     <div class="p-6">
@@ -143,6 +161,7 @@
                     </div>
                 </div>
 
+                <!-- Card 3 -->
                 <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-1 transition duration-300">
                     <div class="bg-orange-500 h-2 w-full"></div>
                     <div class="p-6">
@@ -160,6 +179,7 @@
             </div>
         </section>
 
+        <!-- SECTION 3: DATA SENSITIVITY (PLOTLY) -->
         <section>
             <div class="mb-8 border-l-4 border-cyan-500 pl-4">
                 <h3 class="text-2xl font-bold text-gray-800">Niveles de Protección de Datos</h3>
@@ -173,6 +193,7 @@
             </div>
         </section>
 
+        <!-- SECTION 4: THE CONSENT FLOWCHART (HTML/CSS) -->
         <section>
             <div class="mb-8 border-l-4 border-blue-800 pl-4">
                 <h3 class="text-2xl font-bold text-gray-800">El Flujo Correcto del Consentimiento</h3>
@@ -182,8 +203,10 @@
             </div>
 
             <div class="bg-white p-8 rounded-xl shadow-inner border border-gray-200">
+                <!-- Custom Process Flow using CSS Grid/Flex -->
                 <div class="flex flex-col md:flex-row justify-between items-center gap-4 relative">
                     
+                    <!-- Step 1 -->
                     <div class="w-full md:w-1/4 flex flex-col items-center z-10">
                         <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-3xl mb-4 border-2 border-blue-500">👤</div>
                         <div class="bg-white border-2 border-gray-200 p-4 rounded-lg text-center shadow-sm w-full">
@@ -192,9 +215,11 @@
                         </div>
                     </div>
 
+                    <!-- Arrow -->
                     <div class="hidden md:block text-gray-400 text-4xl">➜</div>
                     <div class="md:hidden text-gray-400 text-4xl">⬇</div>
 
+                    <!-- Step 2 -->
                     <div class="w-full md:w-1/4 flex flex-col items-center z-10">
                         <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center text-3xl mb-4 border-2 border-orange-500">🍪</div>
                         <div class="bg-white border-2 border-orange-200 p-4 rounded-lg text-center shadow-sm w-full">
@@ -203,9 +228,11 @@
                         </div>
                     </div>
 
+                     <!-- Arrow -->
                      <div class="hidden md:block text-gray-400 text-4xl">➜</div>
                      <div class="md:hidden text-gray-400 text-4xl">⬇</div>
 
+                    <!-- Step 3 -->
                     <div class="w-full md:w-1/4 flex flex-col items-center z-10">
                         <div class="w-16 h-16 bg-cyan-100 rounded-full flex items-center justify-center text-3xl mb-4 border-2 border-cyan-500">✅</div>
                         <div class="bg-white border-2 border-cyan-200 p-4 rounded-lg text-center shadow-sm w-full">
@@ -214,9 +241,11 @@
                         </div>
                     </div>
 
+                     <!-- Arrow -->
                      <div class="hidden md:block text-gray-400 text-4xl">➜</div>
                      <div class="md:hidden text-gray-400 text-4xl">⬇</div>
 
+                    <!-- Step 4 -->
                     <div class="w-full md:w-1/4 flex flex-col items-center z-10">
                         <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-3xl mb-4 border-2 border-blue-500">📝</div>
                         <div class="bg-white border-2 border-blue-200 p-4 rounded-lg text-center shadow-sm w-full">
@@ -229,6 +258,7 @@
             </div>
         </section>
 
+        <!-- SECTION 5: COMMON MISTAKES (CHART.JS) -->
         <section>
             <div class="mb-8 border-l-4 border-red-500 pl-4">
                 <h3 class="text-2xl font-bold text-gray-800">Errores Más Comunes en Auditorías</h3>
@@ -258,6 +288,7 @@
             </div>
         </section>
 
+        <!-- FOOTER / CONCLUSION -->
         <footer class="bg-gray-800 text-white rounded-xl p-8 mt-12 text-center">
             <h3 class="text-2xl font-bold mb-4">Conclusión: La Confianza Vende</h3>
             <p class="max-w-2xl mx-auto mb-6 text-gray-300">
@@ -271,13 +302,10 @@
 
     </main>
 
-    <a href="../index.html" class="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-gray-900 text-white px-5 py-3 rounded-full shadow-2xl hover:bg-black hover:scale-105 transition-all no-underline border-2 border-white/20 group">
-        <span class="text-xl group-hover:-translate-x-1 transition-transform">←</span>
-        <span class="font-bold text-sm">Volver al Perfil de Andrei</span>
-    </a>
-
+    <!-- SCRIPTS FOR CHARTS -->
     <script>
         // --- HELPER FUNCTION: Label Wrapping ---
+        // Splits long strings into arrays of shorter strings for Chart.js
         function splitLabel(str, maxLen = 20) {
             if (str.length <= maxLen) return str;
             const words = str.split(' ');
@@ -296,6 +324,8 @@
             return lines;
         }
 
+        // --- TOOLTIP CONFIGURATION ---
+        // Mandatory callback to handle array labels in tooltips
         const tooltipConfig = {
             callbacks: {
                 title: function(tooltipItems) {
@@ -310,7 +340,10 @@
             }
         };
 
+        // --- CHART 1: FINES COMPARISON (Bar Chart) ---
         const ctxFines = document.getElementById('finesChart').getContext('2d');
+        
+        // Data processing for labels
         const finesLabelsRaw = ['LSSI Leve', 'LSSI Grave', 'LSSI Muy Grave', 'RGPD Max'];
         const finesLabels = finesLabelsRaw.map(l => splitLabel(l));
 
@@ -321,7 +354,12 @@
                 datasets: [{
                     label: 'Cuantía Máxima Sanción (€)',
                     data: [30000, 150000, 600000, 20000000],
-                    backgroundColor: ['#93C5FD', '#3B82F6', '#1E40AF', '#F97316'],
+                    backgroundColor: [
+                        '#93C5FD', // Light Blue
+                        '#3B82F6', // Blue
+                        '#1E40AF', // Dark Blue
+                        '#F97316'  // Alert Orange for RGPD
+                    ],
                     borderColor: '#1F2937',
                     borderWidth: 1
                 }]
@@ -331,7 +369,7 @@
                 maintainAspectRatio: false,
                 scales: {
                     y: {
-                        type: 'logarithmic',
+                        type: 'logarithmic', // Using logarithmic scale because 20M dwarfs 30k
                         title: { display: true, text: 'Euros (Escala Logarítmica)' }
                     }
                 },
@@ -347,7 +385,9 @@
             }
         });
 
+        // --- CHART 2: COMMON MISTAKES (Horizontal Bar) ---
         const ctxMistakes = document.getElementById('mistakesChart').getContext('2d');
+
         const mistakesRaw = [
             'Banner de Cookies sin opción Rechazar',
             'Falta Checkbox en Formularios',
@@ -358,13 +398,13 @@
         const mistakesLabels = mistakesRaw.map(l => splitLabel(l, 25));
 
         new Chart(ctxMistakes, {
-            type: 'bar',
+            type: 'bar', // 'bar' with indexAxis: 'y' makes it horizontal
             data: {
                 labels: mistakesLabels,
                 datasets: [{
                     label: '% de Webs No Cumplidoras',
                     data: [85, 70, 45, 60, 50],
-                    backgroundColor: '#06B6D4',
+                    backgroundColor: '#06B6D4', // Cyan
                     borderColor: '#155E75',
                     borderWidth: 1
                 }]
@@ -392,15 +432,19 @@
             }
         });
 
+        // --- CHART 3: DATA SENSITIVITY (Plotly Treemap) ---
+        // Using Plotly for hierarchical data visualization (Treemap) to show data categories
+        
         const treemapData = [{
             type: "treemap",
             labels: ["Datos Personales", "Básicos", "Especialmente Protegidos", "Económicos", "Nombre/Email", "IP/Cookies", "Salud (Clínicas)", "Religión/Afiliación", "Tarjeta Crédito", "Nóminas"],
             parents: ["", "Datos Personales", "Datos Personales", "Datos Personales", "Básicos", "Básicos", "Especialmente Protegidos", "Especialmente Protegidos", "Económicos", "Económicos"],
-            values:  [100, 50, 30, 20, 25, 25, 15, 15, 10, 10], 
+            values:  [100, 50, 30, 20, 25, 25, 15, 15, 10, 10], // Approximate weights
             textinfo: "label+text",
             textposition: "middle center",
             marker: {
                 colors: ["#F3F4F6", "#93C5FD", "#FCA5A5", "#FDE047", "#BFDBFE", "#BFDBFE", "#FECACA", "#FECACA", "#FEF08A", "#FEF08A"],
+                // Basic: Blueish, Protected: Reddish, Econ: Yellowish
                 line: { width: 2 }
             },
             branchvalues: "total"
@@ -412,12 +456,15 @@
                 font: { family: 'Roboto', size: 20, color: '#1E3A8A' }
             },
             margin: { t: 50, l: 10, r: 10, b: 10 },
-            paper_bgcolor: "rgba(0,0,0,0)",
+            paper_bgcolor: "rgba(0,0,0,0)", // Transparent
             font: { family: 'Roboto' }
         };
 
+        // Configuration for responsive Plotly
         const configPlotly = { responsive: true, displayModeBar: false };
+
         Plotly.newPlot('dataTreemap', treemapData, treemapLayout, configPlotly);
+
     </script>
 </body>
 </html>
