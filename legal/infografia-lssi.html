@@ -4,10 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Infografía: Legalidad Web en España para Autónomos</title>
-    <meta property="og:title" content="Guía Visual: Legalidad Web para Autónomos">
-    <meta property="og:description" content="Infografía interactiva sobre LSSI, RGPD y Sanciones.">
-    <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/3222/3222672.png">
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
@@ -16,24 +12,43 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #F3F4F6;
-            color: #1F2937;
+            background-color: #F3F4F6; /* Light gray background */
+            color: #1F2937; /* Dark gray text */
         }
+        
+        /* Vibrant Palette Variables */
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 800px;
+            max-width: 800px; /* Max width for readability */
             margin-left: auto;
             margin-right: auto;
-            height: 400px;
+            height: 400px; /* Base height */
             max-height: 500px;
             background-color: white;
             border-radius: 0.5rem;
             padding: 1rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
+
         @media (max-width: 768px) {
-            .chart-container { height: 300px; }
+            .chart-container {
+                height: 300px;
+            }
+        }
+
+        /* Custom diagram styling to avoid SVG */
+        .connector-line {
+            width: 2px;
+            background-color: #9CA3AF;
+        }
+        .arrow-down {
+            width: 0; 
+            height: 0; 
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid #9CA3AF;
+            margin: 0 auto;
         }
     </style>
 </head>
@@ -49,26 +64,42 @@
         </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 py-10 space-y-16 pb-32"> <section class="text-center max-w-4xl mx-auto">
+    <main class="max-w-6xl mx-auto px-4 py-10 space-y-16">
+
+        <section class="text-center max-w-4xl mx-auto">
             <h2 class="text-3xl font-bold text-blue-900 mb-6">El Escenario Legal Digital</h2>
             <p class="text-lg text-gray-700 leading-relaxed">
-                Para un autónomo en España, tener una página web no es solo cuestión de diseño. Existen tres normativas fundamentales: <strong>LSSI-CE</strong>, <strong>RGPD</strong> y <strong>LOPD-GDD</strong>. Ignorarlas conlleva riesgos económicos severos.
+                Para un autónomo en España (dentista, consultor, tienda online), tener una página web no es solo cuestión de diseño. Existen tres normativas fundamentales que regulan la transparencia y la privacidad: la <strong>LSSI-CE</strong> (Comercio Electrónico), el <strong>RGPD</strong> (Reglamento Europeo de Protección de Datos) y la <strong>LOPD-GDD</strong> (Ley Orgánica española). Ignorarlas no solo genera desconfianza en el cliente, sino que conlleva riesgos económicos severos.
             </p>
         </section>
 
         <section>
             <div class="mb-8 border-l-4 border-orange-500 pl-4">
                 <h3 class="text-2xl font-bold text-gray-800">El Coste del Incumplimiento</h3>
-                <p class="text-gray-600 mt-2">Comparativa de sanciones máximas según la normativa infringida.</p>
+                <p class="text-gray-600 mt-2">
+                    Muchos autónomos creen que las multas son solo para las grandes multinacionales. Sin embargo, la AEPD (Agencia Española de Protección de Datos) sanciona frecuentemente a pequeñas empresas. Este gráfico compara los rangos máximos de sanciones económicas según la normativa infringida.
+                </p>
             </div>
+            
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <div class="chart-container"><canvas id="finesChart"></canvas></div>
+                <div class="chart-container">
+                    <canvas id="finesChart"></canvas>
+                </div>
                 <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-blue-600">
-                    <h4 class="font-bold text-xl mb-4 text-blue-800">Datos Clave</h4>
+                    <h4 class="font-bold text-xl mb-4 text-blue-800">Datos Clave sobre Sanciones</h4>
                     <ul class="space-y-4 text-gray-700">
-                        <li class="flex items-start"><span class="text-2xl mr-2">⚖️</span><span><strong>LSSI:</strong> Hasta 30.000€ por falta de datos fiscales.</span></li>
-                        <li class="flex items-start"><span class="text-2xl mr-2">🚫</span><span><strong>Cookies:</strong> Hasta 150.000€ por banners falsos.</span></li>
-                        <li class="flex items-start"><span class="text-2xl mr-2">🇪🇺</span><span><strong>RGPD:</strong> Hasta 20 Millones de euros.</span></li>
+                        <li class="flex items-start">
+                            <span class="text-2xl mr-2">⚖️</span>
+                            <span><strong>LSSI (Leves):</strong> Hasta 30.000€ por no mostrar datos fiscales (NIF, Dirección) en la web.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-2xl mr-2">🚫</span>
+                            <span><strong>Cookies (LSSI):</strong> Sanciones de hasta 150.000€ (Graves) por instalar cookies sin consentimiento previo (el famoso "banner falso").</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-2xl mr-2">🇪🇺</span>
+                            <span><strong>RGPD:</strong> Las multas pueden escalar hasta el 4% de la facturación anual global o 20 Millones de euros en casos extremos de filtración de datos.</span>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -77,22 +108,54 @@
         <section class="bg-blue-50 p-8 rounded-xl">
             <div class="text-center mb-10">
                 <h3 class="text-3xl font-bold text-blue-900">Los 3 Textos Legales Obligatorios</h3>
+                <p class="text-gray-600 max-w-2xl mx-auto mt-2">Toda web corporativa o profesional debe contar con enlaces visibles y accesibles a estos tres documentos.</p>
             </div>
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden p-6 hover:-translate-y-1 transition border-t-8 border-cyan-500">
-                    <h4 class="text-xl font-bold text-gray-800 mb-2">1. Aviso Legal</h4>
-                    <p class="text-sm font-semibold text-cyan-600 mb-4">LSSI-CE</p>
-                    <p class="text-gray-600 text-sm">Identifica al dueño del negocio (NIF, Dirección, Registro).</p>
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-1 transition duration-300">
+                    <div class="bg-cyan-500 h-2 w-full"></div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">1. Aviso Legal</h4>
+                        <p class="text-sm font-semibold text-cyan-600 mb-4">LSSI-CE</p>
+                        <p class="text-gray-600 text-sm mb-4">Identifica al dueño del negocio. Genera confianza y transparencia.</p>
+                        <ul class="text-sm text-gray-500 space-y-2">
+                            <li>• Nombre / Razón Social</li>
+                            <li>• NIF / CIF</li>
+                            <li>• Dirección Física</li>
+                            <li>• Datos Registrales (si aplica)</li>
+                            <li>• Nº Colegiado (Dentistas, Abogados)</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden p-6 hover:-translate-y-1 transition border-t-8 border-blue-600">
-                    <h4 class="text-xl font-bold text-gray-800 mb-2">2. Política Privacidad</h4>
-                    <p class="text-sm font-semibold text-blue-600 mb-4">RGPD</p>
-                    <p class="text-gray-600 text-sm">Explica qué haces con los datos y cómo ejercer derechos ARCO.</p>
+
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-1 transition duration-300">
+                    <div class="bg-blue-600 h-2 w-full"></div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">2. Política de Privacidad</h4>
+                        <p class="text-sm font-semibold text-blue-600 mb-4">RGPD + LOPD-GDD</p>
+                        <p class="text-gray-600 text-sm mb-4">Explica qué haces con los datos (emails, teléfonos) que recoges.</p>
+                        <ul class="text-sm text-gray-500 space-y-2">
+                            <li>• Responsable del tratamiento</li>
+                            <li>• Finalidad (¿Para qué?)</li>
+                            <li>• Legitimación (Consentimiento)</li>
+                            <li>• Derechos ARCO (Acceso, Rectificación...)</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden p-6 hover:-translate-y-1 transition border-t-8 border-orange-500">
-                    <h4 class="text-xl font-bold text-gray-800 mb-2">3. Cookies</h4>
-                    <p class="text-sm font-semibold text-orange-600 mb-4">LSSI Art. 22</p>
-                    <p class="text-gray-600 text-sm">Informa y bloquea rastreadores hasta recibir consentimiento.</p>
+
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-1 transition duration-300">
+                    <div class="bg-orange-500 h-2 w-full"></div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold text-gray-800 mb-2">3. Política de Cookies</h4>
+                        <p class="text-sm font-semibold text-orange-600 mb-4">LSSI (Art. 22)</p>
+                        <p class="text-gray-600 text-sm mb-4">Informa sobre los rastreadores instalados en el navegador del usuario.</p>
+                        <ul class="text-sm text-gray-500 space-y-2">
+                            <li>• Qué son las cookies</li>
+                            <li>• Tipos (Analíticas, Publicitarias)</li>
+                            <li>• Cómo desactivarlas</li>
+                            <li>• Panel de configuración real</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </section>
@@ -100,7 +163,11 @@
         <section>
             <div class="mb-8 border-l-4 border-cyan-500 pl-4">
                 <h3 class="text-2xl font-bold text-gray-800">Niveles de Protección de Datos</h3>
+                <p class="text-gray-600 mt-2">
+                    No todos los datos son iguales. Una clínica dental maneja datos de salud (Especialmente Protegidos), lo que exige medidas de seguridad mucho más altas que una web de un diseñador gráfico que solo pide el email. Este diagrama muestra la jerarquía de los datos.
+                </p>
             </div>
+
             <div class="chart-container" style="height: 500px; max-height: 600px;">
                 <div id="dataTreemap" style="width:100%; height:100%;"></div>
             </div>
@@ -108,29 +175,98 @@
 
         <section>
             <div class="mb-8 border-l-4 border-blue-800 pl-4">
-                <h3 class="text-2xl font-bold text-gray-800">El Flujo del Consentimiento</h3>
+                <h3 class="text-2xl font-bold text-gray-800">El Flujo Correcto del Consentimiento</h3>
+                <p class="text-gray-600 mt-2">
+                    El error más común es pre-marcar casillas o instalar cookies antes de que el usuario acepte. Este diagrama ilustra el flujo legalmente requerido para formularios y cookies.
+                </p>
             </div>
+
             <div class="bg-white p-8 rounded-xl shadow-inner border border-gray-200">
-                <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-center">
-                    <div class="w-full md:w-1/4"><div class="text-4xl mb-2">👤</div><h5 class="font-bold">1. Visita</h5></div>
-                    <div class="text-2xl text-gray-400">➜</div>
-                    <div class="w-full md:w-1/4"><div class="text-4xl mb-2">🛑</div><h5 class="font-bold text-orange-600">2. Bloqueo</h5><p class="text-xs">Cookies paradas</p></div>
-                    <div class="text-2xl text-gray-400">➜</div>
-                    <div class="w-full md:w-1/4"><div class="text-4xl mb-2">✅</div><h5 class="font-bold text-green-600">3. Aceptación</h5><p class="text-xs">Carga Analytics</p></div>
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4 relative">
+                    
+                    <div class="w-full md:w-1/4 flex flex-col items-center z-10">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-3xl mb-4 border-2 border-blue-500">👤</div>
+                        <div class="bg-white border-2 border-gray-200 p-4 rounded-lg text-center shadow-sm w-full">
+                            <h5 class="font-bold text-blue-900">1. Visita Web</h5>
+                            <p class="text-xs text-gray-500">Usuario entra</p>
+                        </div>
+                    </div>
+
+                    <div class="hidden md:block text-gray-400 text-4xl">➜</div>
+                    <div class="md:hidden text-gray-400 text-4xl">⬇</div>
+
+                    <div class="w-full md:w-1/4 flex flex-col items-center z-10">
+                        <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center text-3xl mb-4 border-2 border-orange-500">🍪</div>
+                        <div class="bg-white border-2 border-orange-200 p-4 rounded-lg text-center shadow-sm w-full">
+                            <h5 class="font-bold text-orange-700">2. Bloqueo Inicial</h5>
+                            <p class="text-xs text-gray-500">NO se cargan cookies (excepto técnicas). Aparece Banner.</p>
+                        </div>
+                    </div>
+
+                     <div class="hidden md:block text-gray-400 text-4xl">➜</div>
+                     <div class="md:hidden text-gray-400 text-4xl">⬇</div>
+
+                    <div class="w-full md:w-1/4 flex flex-col items-center z-10">
+                        <div class="w-16 h-16 bg-cyan-100 rounded-full flex items-center justify-center text-3xl mb-4 border-2 border-cyan-500">✅</div>
+                        <div class="bg-white border-2 border-cyan-200 p-4 rounded-lg text-center shadow-sm w-full">
+                            <h5 class="font-bold text-cyan-700">3. Acción Afirmativa</h5>
+                            <p class="text-xs text-gray-500">Usuario pulsa "Aceptar".<br>Se carga Analytics/Pixel.</p>
+                        </div>
+                    </div>
+
+                     <div class="hidden md:block text-gray-400 text-4xl">➜</div>
+                     <div class="md:hidden text-gray-400 text-4xl">⬇</div>
+
+                    <div class="w-full md:w-1/4 flex flex-col items-center z-10">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-3xl mb-4 border-2 border-blue-500">📝</div>
+                        <div class="bg-white border-2 border-blue-200 p-4 rounded-lg text-center shadow-sm w-full">
+                            <h5 class="font-bold text-blue-900">4. Formulario</h5>
+                            <p class="text-xs text-gray-500">Checkbox "He leído y acepto la Política de Privacidad" (Desmarcado).</p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
 
         <section>
             <div class="mb-8 border-l-4 border-red-500 pl-4">
-                <h3 class="text-2xl font-bold text-gray-800">Errores Frecuentes (Auditoría)</h3>
+                <h3 class="text-2xl font-bold text-gray-800">Errores Más Comunes en Auditorías</h3>
+                <p class="text-gray-600 mt-2">
+                    Basado en auditorías web a pequeños negocios, estos son los fallos más recurrentes que exponen a los autónomos a sanciones. Observa cómo la gestión de cookies es el principal punto débil.
+                </p>
             </div>
-            <div class="chart-container"><canvas id="mistakesChart"></canvas></div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="chart-container">
+                    <canvas id="mistakesChart"></canvas>
+                </div>
+                <div class="flex flex-col justify-center space-y-4">
+                    <div class="bg-white p-4 rounded shadow border-l-4 border-red-500">
+                        <h4 class="font-bold text-gray-800">Banner de Cookies "Muro"</h4>
+                        <p class="text-sm text-gray-600">Un banner que solo deja "Aceptar" y no permite "Rechazar" o "Configurar" fácilmente es ilegal desde 2024 (Guía AEPD).</p>
+                    </div>
+                    <div class="bg-white p-4 rounded shadow border-l-4 border-orange-500">
+                        <h4 class="font-bold text-gray-800">Formularios sin "Coletilla"</h4>
+                        <p class="text-sm text-gray-600">Debajo del botón "Enviar" debe haber un resumen legal básico (Responsable + Finalidad + Derechos).</p>
+                    </div>
+                    <div class="bg-white p-4 rounded shadow border-l-4 border-blue-500">
+                        <h4 class="font-bold text-gray-800">Falta de NIF en el Pie</h4>
+                        <p class="text-sm text-gray-600">El número de identificación fiscal debe ser fácil de encontrar, idealmente en el Aviso Legal enlazado en el footer.</p>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <footer class="bg-gray-800 text-white rounded-xl p-8 mt-12 text-center">
-            <h3 class="text-2xl font-bold mb-4">Conclusión</h3>
-            <p class="text-gray-300 text-sm">Infografía generada por Andrei Dima con fines informativos.</p>
+            <h3 class="text-2xl font-bold mb-4">Conclusión: La Confianza Vende</h3>
+            <p class="max-w-2xl mx-auto mb-6 text-gray-300">
+                Cumplir la ley no es solo evitar multas. Una web legal, clara y transparente transmite profesionalidad. Un paciente o cliente confiará más sus datos a un negocio que demuestra cuidarlos.
+            </p>
+            <div class="text-sm text-gray-500">
+                <p>Fuentes: LSSI-CE, RGPD (UE) 2016/679, LOPD-GDD 3/2018, Guía de Cookies AEPD (2024).</p>
+                <p>Infografía generada con fines informativos. No constituye asesoramiento legal formal.</p>
+            </div>
         </footer>
 
     </main>
@@ -141,39 +277,147 @@
     </a>
 
     <script>
-        // Config Chart.js
-        const tooltipConfig = { callbacks: { title: (i) => Array.isArray(i[0].label) ? i[0].label.join(' ') : i[0].label }};
-        const splitLabel = (str, max=20) => str.length <= max ? str : str.split(' ').reduce((a, w) => { let l=a[a.length-1]; if(l && l.length+w.length<max) a[a.length-1]+=' '+w; else a.push(w); return a; }, []);
+        // --- HELPER FUNCTION: Label Wrapping ---
+        function splitLabel(str, maxLen = 20) {
+            if (str.length <= maxLen) return str;
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = words[0];
 
-        // Chart 1
-        new Chart(document.getElementById('finesChart'), {
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + 1 + words[i].length <= maxLen) {
+                    currentLine += ' ' + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        const tooltipConfig = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        const ctxFines = document.getElementById('finesChart').getContext('2d');
+        const finesLabelsRaw = ['LSSI Leve', 'LSSI Grave', 'LSSI Muy Grave', 'RGPD Max'];
+        const finesLabels = finesLabelsRaw.map(l => splitLabel(l));
+
+        new Chart(ctxFines, {
             type: 'bar',
             data: {
-                labels: [['LSSI','Leve'], ['LSSI','Grave'], ['LSSI','Muy Grave'], ['RGPD','Max']],
-                datasets: [{ label: 'Multa Máxima (€)', data: [30000, 150000, 600000, 20000000], backgroundColor: ['#93C5FD','#3B82F6','#1E40AF','#F97316'] }]
+                labels: finesLabels,
+                datasets: [{
+                    label: 'Cuantía Máxima Sanción (€)',
+                    data: [30000, 150000, 600000, 20000000],
+                    backgroundColor: ['#93C5FD', '#3B82F6', '#1E40AF', '#F97316'],
+                    borderColor: '#1F2937',
+                    borderWidth: 1
+                }]
             },
-            options: { responsive: true, maintainAspectRatio: false, scales: { y: { type: 'logarithmic' } }, plugins: { legend: {display:false} } }
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        type: 'logarithmic',
+                        title: { display: true, text: 'Euros (Escala Logarítmica)' }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: tooltipConfig,
+                    title: {
+                        display: true,
+                        text: 'Comparativa de Sanciones Máximas (LSSI vs RGPD)',
+                        font: { size: 16 }
+                    }
+                }
+            }
         });
 
-        // Chart 2 (Mistakes)
-        new Chart(document.getElementById('mistakesChart'), {
+        const ctxMistakes = document.getElementById('mistakesChart').getContext('2d');
+        const mistakesRaw = [
+            'Banner de Cookies sin opción Rechazar',
+            'Falta Checkbox en Formularios',
+            'Ausencia de Aviso Legal',
+            'Política Privacidad Genérica (Copia/Pega)',
+            'Envío de Emails sin consentimiento'
+        ];
+        const mistakesLabels = mistakesRaw.map(l => splitLabel(l, 25));
+
+        new Chart(ctxMistakes, {
             type: 'bar',
             data: {
-                labels: ['Banner sin "Rechazar"', 'Falta Checkbox', 'Sin Aviso Legal', 'Política Copiada', 'Spam Email'].map(l => splitLabel(l)),
-                datasets: [{ label: '% Webs', data: [85, 70, 45, 60, 50], backgroundColor: '#06B6D4' }]
+                labels: mistakesLabels,
+                datasets: [{
+                    label: '% de Webs No Cumplidoras',
+                    data: [85, 70, 45, 60, 50],
+                    backgroundColor: '#06B6D4',
+                    borderColor: '#155E75',
+                    borderWidth: 1
+                }]
             },
-            options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: {display:false} } }
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: { display: true, text: 'Porcentaje (%)' }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: tooltipConfig,
+                    title: {
+                        display: true,
+                        text: 'Infracciones más frecuentes (Auditoría PYMES)',
+                        font: { size: 16 }
+                    }
+                }
+            }
         });
 
-        // Chart 3 (Treemap)
-        Plotly.newPlot('dataTreemap', [{
+        const treemapData = [{
             type: "treemap",
-            labels: ["Datos", "Básicos", "Protegidos", "Económicos", "Email", "IP", "Salud", "Religión", "Tarjeta", "Nómina"],
-            parents: ["", "Datos", "Datos", "Datos", "Básicos", "Básicos", "Protegidos", "Protegidos", "Económicos", "Económicos"],
-            values:  [100, 50, 30, 20, 25, 25, 15, 15, 10, 10],
+            labels: ["Datos Personales", "Básicos", "Especialmente Protegidos", "Económicos", "Nombre/Email", "IP/Cookies", "Salud (Clínicas)", "Religión/Afiliación", "Tarjeta Crédito", "Nóminas"],
+            parents: ["", "Datos Personales", "Datos Personales", "Datos Personales", "Básicos", "Básicos", "Especialmente Protegidos", "Especialmente Protegidos", "Económicos", "Económicos"],
+            values:  [100, 50, 30, 20, 25, 25, 15, 15, 10, 10], 
             textinfo: "label+text",
-            marker: { colors: ["#F3F4F6", "#93C5FD", "#FCA5A5", "#FDE047", "#BFDBFE", "#BFDBFE", "#FECACA", "#FECACA", "#FEF08A", "#FEF08A"] }
-        }], { margin: { t:0, l:0, r:0, b:0 }, paper_bgcolor: "rgba(0,0,0,0)" }, {responsive: true, displayModeBar: false});
+            textposition: "middle center",
+            marker: {
+                colors: ["#F3F4F6", "#93C5FD", "#FCA5A5", "#FDE047", "#BFDBFE", "#BFDBFE", "#FECACA", "#FECACA", "#FEF08A", "#FEF08A"],
+                line: { width: 2 }
+            },
+            branchvalues: "total"
+        }];
+
+        const treemapLayout = {
+            title: {
+                text: "Categorización de Datos (Treemap)",
+                font: { family: 'Roboto', size: 20, color: '#1E3A8A' }
+            },
+            margin: { t: 50, l: 10, r: 10, b: 10 },
+            paper_bgcolor: "rgba(0,0,0,0)",
+            font: { family: 'Roboto' }
+        };
+
+        const configPlotly = { responsive: true, displayModeBar: false };
+        Plotly.newPlot('dataTreemap', treemapData, treemapLayout, configPlotly);
     </script>
 </body>
 </html>
